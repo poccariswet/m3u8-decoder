@@ -133,7 +133,6 @@ type MediaSeqment struct {
 	ProgramDateTime time.Time // EXT-X-PROGRAM-DATE-TIME:<YYYY-MM-DDThh:mm:ssZ>
 	Map             *Map      //EXT-X-MAP
 	Discontinuity   bool      // EXT-X-DISCONTINUITY encoding discontinuity between the media segment that follows it and the one that preceded it.
-
 }
 
 type MediaPlaylist struct {
@@ -148,9 +147,19 @@ type MediaPlaylist struct {
 	IFrameOnly     bool         // EXT-X-I-FRAMES-ONLY
 }
 
+type VariantAttributes struct {
+	Bandwidth  uint64
+	ProgramID  uint64
+	Codec      string
+	Resolution string
+	Audio      string
+	Video      string
+}
+
 type VariantPlaylist struct {
 	URI            string
 	MediaPlaylists *MediaPlaylist
+	VariantAttributes
 }
 
 type MasterPlaylist struct {
