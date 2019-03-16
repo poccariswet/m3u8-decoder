@@ -167,22 +167,3 @@ type MasterPlaylist struct {
 	version          uint8
 	VariantPlaylists []*VariantPlaylist
 }
-
-// Decode From returns playlist and find the type.
-/*func DecodeFrom(r io.Reader) (Playlist, PlaylistType, error) {
-	buf := new(bytes.Buffer)
-	_, err := buf.ReadFrom(r)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return decode(buf)
-}
-
-// decode is master media play list decoder
-func decode(buf *bytes.Buffer) (PlayList, PlayListType, error) {
-	var medialist MediaPlaylist
-	var playlistType PlaylistType
-
-	return nil, 0, nil
-}*/
