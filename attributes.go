@@ -6,12 +6,6 @@ import (
 	"time"
 )
 
-type Playlist interface {
-	Decode(bytes.Buffer, bool) error
-	DecodeFrom(io.Reader) error
-	String() string
-}
-
 /*
 	sample m3u8 playlist
 
@@ -86,6 +80,19 @@ type Playlist interface {
    audio-only.m3u8
 */
 
+type Playlist interface {
+	DecodeFrom(io.Reader) error
+	String() string
+}
+
+type ListType int
+
+const (
+	MASTER ListType = iota
+	MEDIA
+	ERRTYPE
+)
+
 // EXT-X-PLAYLIST-TYPE tag with a value of either EVENT or VOD
 type PlayListType uint
 
@@ -135,7 +142,8 @@ type MediaSeqment struct {
 }
 
 type MediaPlaylist struct {
-	buf bytes.Buffer
+	buf      bytes.Buffer
+	capacity uint // max capacity of playlist
 
 	MediaSeqments  []*MediaSeqment
 	MediaSequence  uint64
