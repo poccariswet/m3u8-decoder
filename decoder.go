@@ -2,6 +2,7 @@ package m3u8
 
 import (
 	"bytes"
+	"errors"
 	"io"
 )
 
@@ -22,7 +23,8 @@ func (p *MediaPlaylist) Init() error {
 func decode(buf bytes.Buffer) (Playlist, ListType, error) {
 	var master *MasterPlaylist
 	var media *MediaPlaylist
-	var listtype ListType
+	var listtype *ListType
+	var end bool
 
 	if err := master.Init(); err != nil {
 		return nil, ERRTYPE, err
@@ -32,9 +34,28 @@ func decode(buf bytes.Buffer) (Playlist, ListType, error) {
 		return nil, ERRTYPE, err
 	}
 
-	// ↓ read していく
+	for !end {
+		line, err := buf.ReadString('\n')
+		if err != io.EOF {
+			end = true
+		} else if err != nil {
+			break
+		}
 
-	return nil, nil, nil
+		if len(line) < 1 || line == "\r" {
+			continue
+		}
+
+		if err := decodeMasterPlaylist(master, listtype, line); err != nil {
+			return master, listtype, nil
+		}
+
+		if err := decodeMediaPlaylist(media, listtype, line); err != nil {
+			return media, listtype, nil
+		}
+	}
+
+	return nil, 2, errors.New("not playlist")
 }
 
 func DecodeFrom(r io.Reader) (Playlist, ListType, error) {
