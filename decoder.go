@@ -57,7 +57,9 @@ func decode(buf bytes.Buffer) (Playlist, ListType, error) {
 
 	switch listtype {
 	case MASTER:
+		return master, listtype, nil
 	case MEDIA:
+		return media, listtype, nil
 	}
 
 	return nil, 2, errors.New("not playlist")
@@ -72,10 +74,12 @@ func DecodeFrom(r io.Reader) (Playlist, ListType, error) {
 	return decode(buf)
 }
 
-func decodeMasterPlaylist() (*Playlist, *ListType, error) {
+func decodeMasterPlaylist(playlist *Playlist, listtype *ListType, line string) error {
+
+	return nil, 2, nil
 
 }
 
-func decodeMediaPlaylist() (*Playlist, *listtype, error) {
-
+func decodeMediaPlaylist(playlist *Playlist, listtype *ListType, line string) error {
+	return nil, 2, nil
 }
