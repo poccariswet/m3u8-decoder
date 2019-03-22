@@ -94,10 +94,10 @@ const (
 )
 
 // EXT-X-PLAYLIST-TYPE tag with a value of either EVENT or VOD
-type PlayListType uint
+type PlaylistType uint
 
 const (
-	EVENT PlayListType = iota
+	EVENT PlaylistType = iota
 	VOD
 )
 
