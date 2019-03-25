@@ -175,3 +175,8 @@ type MasterPlaylist struct {
 	version          uint8
 	VariantPlaylists []*VariantPlaylist
 }
+
+type States struct {
+	m3u    bool
+	xmedia XMedia
+}

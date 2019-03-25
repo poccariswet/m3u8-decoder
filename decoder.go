@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"io"
+	"strings"
 )
 
 func (p *MasterPlaylist) Init() error {
@@ -25,6 +26,7 @@ func decode(buf bytes.Buffer) (Playlist, ListType, error) {
 	var media *MediaPlaylist
 	var listtype *ListType
 	var end bool
+	var states *States
 
 	if err := master.Init(); err != nil {
 		return nil, ERRTYPE, err
@@ -46,11 +48,12 @@ func decode(buf bytes.Buffer) (Playlist, ListType, error) {
 			continue
 		}
 
-		if err := decodeMasterPlaylist(master, listtype, line); err != nil {
+		line = strings.TrimSpace(line)
+		if err := decodeMasterPlaylist(master, states, listtype, line); err != nil {
 			return master, listtype, err
 		}
 
-		if err := decodeMediaPlaylist(media, listtype, line); err != nil {
+		if err := decodeMediaPlaylist(media, states, listtype, line); err != nil {
 			return media, listtype, err
 		}
 	}
@@ -74,12 +77,58 @@ func DecodeFrom(r io.Reader) (Playlist, ListType, error) {
 	return decode(buf)
 }
 
-func decodeMasterPlaylist(playlist *Playlist, listtype *ListType, line string) error {
-
-	return nil, 2, nil
+func decodeMasterPlaylist(playlist *Playlist, states *States, listtype *ListType, line string) error {
+	switch {
+	case line == "#EXTM3U":
+		states.m3u = true
+	case strings.HasPrefix(line, "#EXT-X-MEDIA:"):
+		listtype = MASTER
+		for i, v := range parseLine(line[len("#EXT-X-MEDIA:"):]) {
+			switch i {
+			case "URI":
+				states.xmedia.URI = v
+			case "TYPE":
+				states.xmedia.Type = v
+			case "GROUP-ID":
+				states.xmedia.GroupID = v
+			case "LANGUAGE":
+				states.xmedia.Language = v
+			case "NAME":
+				states.xmedia.Name = v
+			case "DEFAULT":
+				states.xmedia.Default = v
+			case "AUTOSELECT":
+				states.xmedia.Autoselect = v
+			}
+		}
+		/*
+			type XMedia struct {
+				URI        string
+				Type       string
+				GroupID    string
+				Language   string
+				Name       string
+				Default    string
+				Autoselect string
+			}
+		*/
+	}
+	return nil
 
 }
 
-func decodeMediaPlaylist(playlist *Playlist, listtype *ListType, line string) error {
-	return nil, 2, nil
+func decodeMediaPlaylist(playlist *Playlist, states *States, listtype *ListType, line string) error {
+	return nil
+}
+
+func parseLine(line string) map[string]string {
+	m := map[string]string{}
+	lines := strings.Split(line, ",")
+
+	for _, v := range lines {
+		s := strings.Split(v, "=")
+		m[s[0]] = strings.Trim(s[1], `"`)
+	}
+
+	return m
 }
