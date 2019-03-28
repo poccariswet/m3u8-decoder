@@ -21,10 +21,26 @@ func (p *MediaPlaylist) Init() error {
 	return nil
 }
 
-func decode(buf bytes.Buffer) (Playlist, ListType, error) {
+func (p *MasterPlaylist) DecodeFrom(r io.Reader) error {
+	return nil
+}
+
+func (p *MediaPlaylist) DecodeFrom(r io.Reader) error {
+	return nil
+}
+
+func (p *MasterPlaylist) String() string {
+	return ""
+}
+
+func (p *MediaPlaylist) String() string {
+	return ""
+}
+
+func decode(buf *bytes.Buffer) (Playlist, ListType, error) {
 	var master *MasterPlaylist
 	var media *MediaPlaylist
-	var listtype *ListType
+	var listtype ListType
 	var end bool
 	var states *States
 
@@ -77,7 +93,7 @@ func DecodeFrom(r io.Reader) (Playlist, ListType, error) {
 	return decode(buf)
 }
 
-func decodeMasterPlaylist(playlist *Playlist, states *States, listtype *ListType, line string) error {
+func decodeMasterPlaylist(playlist *MasterPlaylist, states *States, listtype ListType, line string) error {
 	switch {
 	case line == "#EXTM3U":
 		states.m3u = true
@@ -117,7 +133,7 @@ func decodeMasterPlaylist(playlist *Playlist, states *States, listtype *ListType
 
 }
 
-func decodeMediaPlaylist(playlist *Playlist, states *States, listtype *ListType, line string) error {
+func decodeMediaPlaylist(playlist *MediaPlaylist, states *States, listtype ListType, line string) error {
 	return nil
 }
 

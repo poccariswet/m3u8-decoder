@@ -142,8 +142,9 @@ type MediaSeqment struct {
 }
 
 type MediaPlaylist struct {
-	buf      bytes.Buffer
-	capacity uint // max capacity of playlist
+	buf          bytes.Buffer
+	capacity     uint // max capacity of playlist
+	playlistSize uint // playlist size of mediasegment
 
 	MediaSeqments  []*MediaSeqment
 	MediaSequence  uint64
