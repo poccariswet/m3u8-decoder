@@ -33,11 +33,11 @@ func (p *MediaPlaylist) DecodeFrom(r io.Reader) error {
 }
 
 func (p *MasterPlaylist) String() string {
-	return ""
+	return "MASTER PLAYLIST"
 }
 
 func (p *MediaPlaylist) String() string {
-	return ""
+	return "MEDIA PLAYLIST"
 }
 
 func decode(buf *bytes.Buffer) (Playlist, ListType, error) {
@@ -49,7 +49,7 @@ func decode(buf *bytes.Buffer) (Playlist, ListType, error) {
 
 	for !end {
 		line, err := buf.ReadString('\n')
-		if err != io.EOF {
+		if err == io.EOF {
 			end = true
 		} else if err != nil {
 			break
@@ -61,11 +61,11 @@ func decode(buf *bytes.Buffer) (Playlist, ListType, error) {
 
 		line = strings.TrimSpace(line)
 		if err := decodeMasterPlaylist(master, states, listtype, line); err != nil {
-			return master, listtype, err
+			return master, ERRTYPE, err
 		}
 
 		if err := decodeMediaPlaylist(media, states, listtype, line); err != nil {
-			return media, listtype, err
+			return media, ERRTYPE, err
 		}
 	}
 

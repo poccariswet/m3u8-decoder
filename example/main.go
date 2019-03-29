@@ -20,6 +20,11 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	fmt.Println(playlist)
-	fmt.Println(listtype)
+	switch listtype {
+	case m3u8.MASTER:
+		fmt.Println(playlist)
+	case m3u8.MEDIA:
+		fmt.Println(playlist)
+	default:
+	}
 }
