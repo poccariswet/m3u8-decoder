@@ -178,6 +178,7 @@ type MasterPlaylist struct {
 }
 
 type States struct {
-	m3u    bool
-	xmedia XMedia
+	m3u       bool
+	xmedia    XMedia
+	streamInf *VariantAttributes
 }

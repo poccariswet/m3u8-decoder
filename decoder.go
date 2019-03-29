@@ -3,6 +3,7 @@ package m3u8
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"strings"
 )
@@ -96,6 +97,17 @@ func decodeMasterPlaylist(playlist *MasterPlaylist, states *States, listtype Lis
 		listtype = MASTER
 		for i, v := range parseLine(line[len("#EXT-X-MEDIA:"):]) {
 			switch i {
+			/*
+				type XMedia struct {
+					URI        string
+					Type       string
+					GroupID    string
+					Language   string
+					Name       string
+					Default    string
+					Autoselect string
+				}
+			*/
 			case "URI":
 				states.xmedia.URI = v
 			case "TYPE":
@@ -112,17 +124,41 @@ func decodeMasterPlaylist(playlist *MasterPlaylist, states *States, listtype Lis
 				states.xmedia.Autoselect = v
 			}
 		}
-		/*
-			type XMedia struct {
-				URI        string
-				Type       string
-				GroupID    string
-				Language   string
-				Name       string
-				Default    string
-				Autoselect string
+	case strings.HasPrefix(line, "#EXT-X-VERSION:"):
+		listtype = MASTER
+		_, err := fmt.Sscanf(line, "#EXT-X-VERSION:%s", &playlist.version)
+		if err != nil {
+			return errors.Wrap(err, "invalid scan version")
+		}
+	case strings.HasPrefix(line, "#EXT-X-STREAM-INF:"):
+		listtype = MASTER
+		for i, v := range parseLine(line[len("#EXT-X-STREAM-INF:"):]) {
+			switch i {
+			/*
+				type VariantAttributes struct {
+					Bandwidth  uint64
+					ProgramID  uint64
+					Codec      string
+					Resolution string
+					Audio      string
+					Video      string
+				}
+			*/
+			case "BANDWIDTH":
+				states.streamInf.Bandwidth = v
+			case "PROGRAM-ID":
+				states.streamInf.ProgramID = v
+			case "CODECS":
+				states.streamInf.Codec = v
+			case "RESOLUTION":
+				states.streamInf.Resolution = v
+			case "AUDIO":
+				states.streamInf.Audio = v
+			case "VIDEO":
+				states.streamInf.Video = v
 			}
-		*/
+		}
+
 	}
 	return nil
 
