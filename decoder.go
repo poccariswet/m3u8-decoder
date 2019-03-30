@@ -158,13 +158,17 @@ func decodeMasterPlaylist(playlist *MasterPlaylist, states *States, listtype Lis
 				states.streamInf.Video = v
 			}
 		}
-
+		return nil
 	}
 	return nil
 
 }
 
 func decodeMediaPlaylist(playlist *MediaPlaylist, states *States, listtype ListType, line string) error {
+	switch line {
+	case line == "#EXTM3U":
+		states.m3u = true
+	}
 	return nil
 }
 
