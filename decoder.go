@@ -168,6 +168,12 @@ func decodeMediaPlaylist(playlist *MediaPlaylist, states *States, listtype ListT
 	switch line {
 	case line == "#EXTM3U":
 		states.m3u = true
+	case strings.HasPrefix(line, "#EXT-X-VERSION:"):
+		listtype = MASTER
+		_, err := fmt.Sscanf(line, "#EXT-X-VERSION:%s", &playlist.version)
+		if err != nil {
+			return errors.Wrap(err, "invalid scan version")
+		}
 	}
 	return nil
 }
