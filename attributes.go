@@ -78,6 +78,27 @@ import (
    #EXT-X-I-FRAME-STREAM-INF:BANDWIDTH=550000,URI="hi/iframe.m3u8"
    #EXT-X-STREAM-INF:BANDWIDTH=65000,CODECS="mp4a.40.5"
    audio-only.m3u8
+
+	8.7.  Variant Playlist with Alternative audio
+
+   #EXTM3U
+   #EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="aac",NAME="English", \
+      DEFAULT=YES,AUTOSELECT=YES,LANGUAGE="en", \
+      URI="main/english-audio.m3u8"
+   #EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="aac",NAME="Deutsche", \
+      DEFAULT=NO,AUTOSELECT=YES,LANGUAGE="de", \
+      URI="main/german-audio.m3u8"
+   #EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="aac",NAME="Commentary", \
+      DEFAULT=NO,AUTOSELECT=NO,URI="commentary/audio-only.m3u8"
+   #EXT-X-STREAM-INF:BANDWIDTH=1280000,CODECS="...",AUDIO="aac"
+   low/video-only.m3u8
+   #EXT-X-STREAM-INF:BANDWIDTH=2560000,CODECS="...",AUDIO="aac"
+   mid/video-only.m3u8
+   #EXT-X-STREAM-INF:BANDWIDTH=7680000,CODECS="...",AUDIO="aac"
+   hi/video-only.m3u8
+   #EXT-X-STREAM-INF:BANDWIDTH=65000,CODECS="mp4a.40.5",AUDIO="aac"
+   main/english-audio.m3u8
+
 */
 
 type Playlist interface {
