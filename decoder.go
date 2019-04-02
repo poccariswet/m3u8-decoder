@@ -46,7 +46,6 @@ func (p *MediaPlaylist) String() string {
 func decode(buf *bytes.Buffer) (Playlist, ListType, error) {
 	master := NewMasterPlaylist()
 	media := NewMediaPlaylist()
-	var listtype ListType
 	var end bool
 	states := new(States)
 
@@ -63,20 +62,20 @@ func decode(buf *bytes.Buffer) (Playlist, ListType, error) {
 		}
 
 		line = strings.TrimSpace(line)
-		if err := decodeMasterPlaylist(master, states, listtype, line); err != nil {
+		if err := master.decodePlaylist(states, line); err != nil {
 			return master, ERRTYPE, err
 		}
 
-		if err := decodeMediaPlaylist(media, states, listtype, line); err != nil {
+		if err := media.decodePlaylist(states, line); err != nil {
 			return media, ERRTYPE, err
 		}
 	}
 
-	switch listtype {
+	switch states.listtype {
 	case MASTER:
-		return master, listtype, nil
+		return master, MASTER, nil
 	case MEDIA:
-		return media, listtype, nil
+		return media, MEDIA, nil
 	}
 
 	return nil, ERRTYPE, errors.New("not playlist")
@@ -91,12 +90,12 @@ func DecodeFrom(r io.Reader) (Playlist, ListType, error) {
 	return decode(buf)
 }
 
-func decodeMasterPlaylist(playlist *MasterPlaylist, states *States, listtype ListType, line string) error {
+func (playlist *MasterPlaylist) decodePlaylist(states *States, line string) error {
 	switch {
 	case line == "#EXTM3U":
 		states.m3u = true
 	case strings.HasPrefix(line, "#EXT-X-MEDIA:"):
-		listtype = MASTER
+		states.listtype = MASTER
 		for i, v := range parseLine(line[len("#EXT-X-MEDIA:"):]) {
 			switch i {
 			/*
@@ -127,14 +126,14 @@ func decodeMasterPlaylist(playlist *MasterPlaylist, states *States, listtype Lis
 			}
 		}
 	case strings.HasPrefix(line, "#EXT-X-VERSION:"):
-		listtype = MASTER
+		states.listtype = MASTER
 		_, err := fmt.Sscanf(line, "#EXT-X-VERSION:%d", &playlist.version)
 		if err != nil {
 			return errors.Wrap(err, "invalid scan version")
 		}
 	case strings.HasPrefix(line, "#EXT-X-STREAM-INF:"):
 		states.streamInf = new(VariantAttributes)
-		listtype = MASTER
+		states.listtype = MASTER
 		for i, v := range parseLine(line[len("#EXT-X-STREAM-INF:"):]) {
 			switch i {
 			/*
@@ -169,36 +168,35 @@ func decodeMasterPlaylist(playlist *MasterPlaylist, states *States, listtype Lis
 				states.streamInf.Video = v
 			}
 		}
-		return nil
 	}
 	return nil
 
 }
 
-func decodeMediaPlaylist(playlist *MediaPlaylist, states *States, listtype ListType, line string) error {
+func (playlist *MediaPlaylist) decodePlaylist(states *States, line string) error {
 	switch {
 	case line == "#EXTM3U":
 		states.m3u = true
 	case strings.HasPrefix(line, "#EXT-X-TARGETDURATION:"):
-		listtype = MEDIA
+		states.listtype = MEDIA
 		_, err := fmt.Sscanf(line, "#EXT-X-TARGETDURATION:%f", &playlist.TargetDuration)
 		if err != nil {
 			return errors.Wrap(err, " #EXT-X-TARGETDURATION scanf err")
 		}
 	case strings.HasPrefix(line, "#EXT-X-MEDIA-SEQUENCE:"):
-		listtype = MEDIA
+		states.listtype = MEDIA
 		_, err := fmt.Sscanf(line, "#EXT-X-MEDIA-SEQUENCE:%d", &playlist.MediaSequence)
 		if err != nil {
 			return errors.Wrap(err, "#EXT-X-MEDIA-SEQUENCE sanf err")
 		}
 	case strings.HasPrefix(line, "#EXT-X-VERSION:"):
-		listtype = MEDIA
+		states.listtype = MEDIA
 		_, err := fmt.Sscanf(line, "#EXT-X-VERSION:%d", &playlist.version)
 		if err != nil {
 			return errors.Wrap(err, "invalid scan version")
 		}
 	case strings.HasPrefix(line, "EXT-X-PLAYLIST-TYPE:"):
-		listtype = MEDIA
+		states.listtype = MEDIA
 		var playlisttype string
 		_, err := fmt.Sscanf(line, "EXT-X-PLAYLIST-TYPE:%s", &playlisttype)
 		if err != nil {
@@ -213,7 +211,7 @@ func decodeMediaPlaylist(playlist *MediaPlaylist, states *States, listtype ListT
 			return errors.New("playlist type is invalid")
 		}
 	case strings.HasPrefix(line, "#EXT-X-KEY:"):
-		listtype = MEDIA
+		states.listtype = MEDIA
 		states.key = new(Key)
 		for i, v := range parseLine(line[len("#EXT-X-KEY:"):]) {
 			switch i {
@@ -234,7 +232,7 @@ func decodeMediaPlaylist(playlist *MediaPlaylist, states *States, listtype ListT
 		}
 		states.existKey = true
 	case line == "#EXT-X-ENDLIST":
-		listtype = MEDIA
+		states.listtype = MEDIA
 	}
 	return nil
 }

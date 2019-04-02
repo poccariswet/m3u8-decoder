@@ -102,6 +102,7 @@ import (
 */
 
 type Playlist interface {
+	decodePlaylist(*States, string) error
 	DecodeFrom(io.Reader) error
 	String() string
 }
@@ -109,9 +110,9 @@ type Playlist interface {
 type ListType int
 
 const (
-	MASTER ListType = iota
+	ERRTYPE ListType = iota
+	MASTER
 	MEDIA
-	ERRTYPE
 )
 
 // EXT-X-PLAYLIST-TYPE tag with a value of either EVENT or VOD
@@ -198,8 +199,12 @@ type MasterPlaylist struct {
 	VariantPlaylists []*VariantPlaylist
 }
 
+// state of m3u and temporary store segments, stream inf...etc
 type States struct {
 	m3u       bool
+	listtype  ListType
 	xmedia    XMedia
 	streamInf *VariantAttributes
+	existKey  bool
+	key       *Key
 }
