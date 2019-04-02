@@ -168,12 +168,41 @@ func decodeMediaPlaylist(playlist *MediaPlaylist, states *States, listtype ListT
 	switch line {
 	case line == "#EXTM3U":
 		states.m3u = true
+	case strings.HasPrefix(line, "#EXT-X-TARGETDURATION:"):
+		listtype = MEDIA
+		_, err := fmt.Sscanf(line, "#EXT-X-TARGETDURATION:%f", &playlist.TargetDuration)
+		if err != nil {
+			return errors.Wrap(err, " #EXT-X-TARGETDURATION scanf err")
+		}
+	case strings.HasPrefix(line, "#EXT-X-MEDIA-SEQUENCE:"):
+		listtype = MEDIA
+		_, err := fmt.Sscanf(line, "#EXT-X-MEDIA-SEQUENCE:%d", &playlist.MediaSequence)
+		if err != nil {
+			return errors.Wrap(err, "#EXT-X-MEDIA-SEQUENCE sanf err")
+		}
 	case strings.HasPrefix(line, "#EXT-X-VERSION:"):
-		listtype = MASTER
+		listtype = MEDIA
 		_, err := fmt.Sscanf(line, "#EXT-X-VERSION:%s", &playlist.version)
 		if err != nil {
 			return errors.Wrap(err, "invalid scan version")
 		}
+	case strings.HasPrefix(line, "EXT-X-PLAYLIST-TYPE:"):
+		listtype = MEDIA
+		var playlisttype string
+		_, err := fmt.Sscanf(line, "EXT-X-PLAYLIST-TYPE:%s", &playlisttype)
+		if err != nil {
+			return errors.Wrap(err, "EXT-X-PLAYLIST-TYPE")
+		}
+		switch playlisttype {
+		case "VOD":
+			playlist.PlaylistType = VOD
+		case "EVENT":
+			playlist.PlaylistType = EVENT
+		default:
+			return errors.New("playlist type is not exist")
+		}
+	case line == "#EXT-X-ENDLIST":
+		listtype = MEDIA
 	}
 	return nil
 }
