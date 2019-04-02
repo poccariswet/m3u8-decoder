@@ -6,11 +6,11 @@ import (
 	"log"
 	"os"
 
-	"github.com/poccariswet/m3u8"
+	"github.com/poccariswet/m3u8-decoder"
 )
 
 func main() {
-	file, err := os.Open("./master.m3u8")
+	file, err := os.Open("./media.m3u8")
 	if err != nil {
 		log.Fatalln(err)
 	}

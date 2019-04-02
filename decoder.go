@@ -2,10 +2,12 @@ package m3u8
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"io"
+	"strconv"
 	"strings"
+
+	"github.com/pkg/errors"
 )
 
 func NewMasterPlaylist() *MasterPlaylist {
@@ -126,11 +128,12 @@ func decodeMasterPlaylist(playlist *MasterPlaylist, states *States, listtype Lis
 		}
 	case strings.HasPrefix(line, "#EXT-X-VERSION:"):
 		listtype = MASTER
-		_, err := fmt.Sscanf(line, "#EXT-X-VERSION:%s", &playlist.version)
+		_, err := fmt.Sscanf(line, "#EXT-X-VERSION:%d", &playlist.version)
 		if err != nil {
 			return errors.Wrap(err, "invalid scan version")
 		}
 	case strings.HasPrefix(line, "#EXT-X-STREAM-INF:"):
+		states.streamInf = new(VariantAttributes)
 		listtype = MASTER
 		for i, v := range parseLine(line[len("#EXT-X-STREAM-INF:"):]) {
 			switch i {
@@ -145,9 +148,17 @@ func decodeMasterPlaylist(playlist *MasterPlaylist, states *States, listtype Lis
 				}
 			*/
 			case "BANDWIDTH":
-				states.streamInf.Bandwidth = v
+				s, err := strconv.ParseUint(v, 10, 64)
+				if err != nil {
+					return errors.Wrap(err, "convert err of strconv BANDWIDTH")
+				}
+				states.streamInf.Bandwidth = s
 			case "PROGRAM-ID":
-				states.streamInf.ProgramID = v
+				s, err := strconv.ParseUint(v, 10, 64)
+				if err != nil {
+					return errors.Wrap(err, "convert err of strconv PROGRAM-ID")
+				}
+				states.streamInf.ProgramID = s
 			case "CODECS":
 				states.streamInf.Codec = v
 			case "RESOLUTION":
@@ -165,7 +176,7 @@ func decodeMasterPlaylist(playlist *MasterPlaylist, states *States, listtype Lis
 }
 
 func decodeMediaPlaylist(playlist *MediaPlaylist, states *States, listtype ListType, line string) error {
-	switch line {
+	switch {
 	case line == "#EXTM3U":
 		states.m3u = true
 	case strings.HasPrefix(line, "#EXT-X-TARGETDURATION:"):
@@ -182,7 +193,7 @@ func decodeMediaPlaylist(playlist *MediaPlaylist, states *States, listtype ListT
 		}
 	case strings.HasPrefix(line, "#EXT-X-VERSION:"):
 		listtype = MEDIA
-		_, err := fmt.Sscanf(line, "#EXT-X-VERSION:%s", &playlist.version)
+		_, err := fmt.Sscanf(line, "#EXT-X-VERSION:%d", &playlist.version)
 		if err != nil {
 			return errors.Wrap(err, "invalid scan version")
 		}
@@ -199,8 +210,29 @@ func decodeMediaPlaylist(playlist *MediaPlaylist, states *States, listtype ListT
 		case "EVENT":
 			playlist.PlaylistType = EVENT
 		default:
-			return errors.New("playlist type is not exist")
+			return errors.New("playlist type is invalid")
 		}
+	case strings.HasPrefix(line, "#EXT-X-KEY:"):
+		listtype = MEDIA
+		states.key = new(Key)
+		for i, v := range parseLine(line[len("#EXT-X-KEY:"):]) {
+			switch i {
+			/*
+				type Key struct {
+					Method string
+					IV     string // Initialization Vector
+					URI    string
+				}
+			*/
+			case "METHOD":
+				states.key.Method = v
+			case "IV":
+				states.key.IV = v
+			case "URI":
+				states.key.URI = v
+			}
+		}
+		states.existKey = true
 	case line == "#EXT-X-ENDLIST":
 		listtype = MEDIA
 	}
