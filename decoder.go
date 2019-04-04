@@ -90,7 +90,7 @@ func DecodeFrom(r io.Reader) (Playlist, ListType, error) {
 	return decode(buf)
 }
 
-func (playlist *MasterPlaylist) decodePlaylist(states *States, line string) error {
+func (p *MasterPlaylist) decodePlaylist(states *States, line string) error {
 	switch {
 	case line == "#EXTM3U":
 		states.m3u = true
@@ -127,7 +127,7 @@ func (playlist *MasterPlaylist) decodePlaylist(states *States, line string) erro
 		}
 	case strings.HasPrefix(line, "#EXT-X-VERSION:"):
 		states.listtype = MASTER
-		_, err := fmt.Sscanf(line, "#EXT-X-VERSION:%d", &playlist.version)
+		_, err := fmt.Sscanf(line, "#EXT-X-VERSION:%d", &p.version)
 		if err != nil {
 			return errors.Wrap(err, "invalid scan version")
 		}
@@ -173,25 +173,25 @@ func (playlist *MasterPlaylist) decodePlaylist(states *States, line string) erro
 
 }
 
-func (playlist *MediaPlaylist) decodePlaylist(states *States, line string) error {
+func (p *MediaPlaylist) decodePlaylist(states *States, line string) error {
 	switch {
 	case line == "#EXTM3U":
 		states.m3u = true
 	case strings.HasPrefix(line, "#EXT-X-TARGETDURATION:"):
 		states.listtype = MEDIA
-		_, err := fmt.Sscanf(line, "#EXT-X-TARGETDURATION:%f", &playlist.TargetDuration)
+		_, err := fmt.Sscanf(line, "#EXT-X-TARGETDURATION:%f", &p.TargetDuration)
 		if err != nil {
 			return errors.Wrap(err, " #EXT-X-TARGETDURATION scanf err")
 		}
 	case strings.HasPrefix(line, "#EXT-X-MEDIA-SEQUENCE:"):
 		states.listtype = MEDIA
-		_, err := fmt.Sscanf(line, "#EXT-X-MEDIA-SEQUENCE:%d", &playlist.MediaSequence)
+		_, err := fmt.Sscanf(line, "#EXT-X-MEDIA-SEQUENCE:%d", &p.MediaSequence)
 		if err != nil {
 			return errors.Wrap(err, "#EXT-X-MEDIA-SEQUENCE sanf err")
 		}
 	case strings.HasPrefix(line, "#EXT-X-VERSION:"):
 		states.listtype = MEDIA
-		_, err := fmt.Sscanf(line, "#EXT-X-VERSION:%d", &playlist.version)
+		_, err := fmt.Sscanf(line, "#EXT-X-VERSION:%d", &p.version)
 		if err != nil {
 			return errors.Wrap(err, "invalid scan version")
 		}
@@ -204,9 +204,9 @@ func (playlist *MediaPlaylist) decodePlaylist(states *States, line string) error
 		}
 		switch playlisttype {
 		case "VOD":
-			playlist.PlaylistType = VOD
+			p.PlaylistType = VOD
 		case "EVENT":
-			playlist.PlaylistType = EVENT
+			p.PlaylistType = EVENT
 		default:
 			return errors.New("playlist type is invalid")
 		}
