@@ -104,7 +104,7 @@ import (
 type Playlist interface {
 	decodePlaylist(*States, string) error
 	DecodeFrom(io.Reader) error
-	String() string
+	String() string // display all
 }
 
 type ListType int
