@@ -168,6 +168,7 @@ func (p *MasterPlaylist) decodePlaylist(states *States, line string) error {
 				states.streamInf.Video = v
 			}
 		}
+	case strings.HasPrefix(line, "#EXT-X-I-FRAME-STREAM-INF:"):
 	}
 	return nil
 
