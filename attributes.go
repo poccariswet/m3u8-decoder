@@ -2,7 +2,6 @@ package m3u8
 
 import (
 	"bytes"
-	"io"
 	"time"
 )
 
@@ -101,10 +100,8 @@ import (
 
 */
 
-type Playlist interface {
-	decodePlaylist(*States, string) error
-	DecodeFrom(io.Reader) error
-	String() string // display all
+type PlaylistSegment interface {
+	String() string
 }
 
 type ListType int
@@ -148,7 +145,7 @@ type XMedia struct {
 	Autoselect string
 }
 
-// media segment in mesia playlist
+// media segment in media playlist
 // If the Playlist file does not contain an EXT-X-KEY tag then media segments are not encrypted.
 type MediaSeqment struct {
 	SequenceNum     uint64
@@ -174,7 +171,6 @@ type MediaPlaylist struct {
 	TargetDuration float64
 	AllowCache     bool         // EXT-X-ALLOW-CACHE:<YES|NO>
 	PlaylistType   PlaylistType // EXT-X-PLAYLIST-TYPE:<EVENT|VOD>
-	IFrameOnly     bool         // EXT-X-I-FRAMES-ONLY
 }
 
 type VariantAttributes struct {
@@ -197,6 +193,18 @@ type MasterPlaylist struct {
 
 	version          uint8
 	VariantPlaylists []*VariantPlaylist
+}
+
+type Playlist struct {
+	version        uint8
+	PlaylistType   PlaylistType
+	AllowCache     bool
+	MediaSequence  uint64
+	TargetDuration float64
+	IFrameOnly     bool // EXT-X-I-FRAMES-ONLY
+	master         bool
+
+	Segments []PlaylistSegment
 }
 
 // state of m3u and temporary store segments, stream inf...etc
