@@ -69,6 +69,14 @@ func decodeLine(p *Playlist, line string, s *States) error {
 			return errors.Wrap(err, "new media err")
 		}
 		p.Segments = append(p.Segments, m)
+	case strings.HasPrefix(line, ExtStreamInf):
+		s.master = true
+		s.segmentTag = true
+		v, err := NewVariant(line)
+		if err != nil {
+			return errors.Wrap(err, "new variant err")
+		}
+		s.segment = v
 	}
 }
 

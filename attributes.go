@@ -1,9 +1,5 @@
 package m3u8
 
-import (
-	"time"
-)
-
 /*
 	sample m3u8 playlist
 
@@ -134,7 +130,7 @@ type Map struct {
 }
 
 // The EXT-X-MEDIA tag is used to relate Playlists that contain alternative renditions of the same content.
-type XMedia struct {
+type MediaSeqment struct {
 	URI        string
 	Type       string
 	GroupID    string
@@ -144,28 +140,29 @@ type XMedia struct {
 	Autoselect string
 }
 
-// media segment in media playlist
-// If the Playlist file does not contain an EXT-X-KEY tag then media segments are not encrypted.
-type MediaSeqment struct {
-	SequenceNum     uint64
-	Title           string
-	ByteRangeN      int64 // EXT-X-BYTERANGE uri length
-	ByteRangeO      int64 // EXT-X-BYTERANGE uri offset
-	URI             string
-	Duration        float64   // EXTINF
-	Key             *Key      // EXT-X-KEY
-	ProgramDateTime time.Time // EXT-X-PROGRAM-DATE-TIME:<YYYY-MM-DDThh:mm:ssZ>
-	Map             *Map      //EXT-X-MAP
-	Discontinuity   bool      // EXT-X-DISCONTINUITY encoding discontinuity between the media segment that follows it and the one that preceded it.
+type ByteRange struct {
+	ByteRangeN int64 // EXT-X-BYTERANGE uri length
+	ByteRangeO int64 // EXT-X-BYTERANGE uri offset
 }
 
+// #EXT-X-STREAM-INF attributes
 type VariantAttributes struct {
+	URI        string
+	Name       string
+	Subtitle   string
 	Bandwidth  uint64
 	ProgramID  uint64
 	Codec      string
+	AudioCodec string
 	Resolution string
 	Audio      string
 	Video      string
+	FrameRate  float64
+	HDCPLevel  string
+	Width      int64
+	Height     int64
+
+	IFrame bool
 }
 
 type Playlist struct {
@@ -177,13 +174,15 @@ type Playlist struct {
 	IFrameOnly     bool // EXT-X-I-FRAMES-ONLY
 	master         bool
 	live           bool
+	Discontinty    bool // EXT-X-DISCONTINUITY encoding discontinuity between the media segment that follows it and the one that preceded it.
 
 	Segments []PlaylistSegment
 }
 
 // state of m3u and temporary store segments, stream inf...etc
 type States struct {
-	master   bool
-	listtype ListType
-	segment  PlaylistSegment
+	master     bool
+	segmentTag bool
+	listtype   ListType
+	segment    PlaylistSegment
 }
