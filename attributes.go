@@ -1,7 +1,6 @@
 package m3u8
 
 import (
-	"bytes"
 	"time"
 )
 
@@ -160,19 +159,6 @@ type MediaSeqment struct {
 	Discontinuity   bool      // EXT-X-DISCONTINUITY encoding discontinuity between the media segment that follows it and the one that preceded it.
 }
 
-type MediaPlaylist struct {
-	buf          bytes.Buffer
-	capacity     uint // max capacity of playlist
-	playlistSize uint // playlist size of mediasegment
-
-	MediaSeqments  []*MediaSeqment
-	MediaSequence  uint64
-	version        uint8
-	TargetDuration float64
-	AllowCache     bool         // EXT-X-ALLOW-CACHE:<YES|NO>
-	PlaylistType   PlaylistType // EXT-X-PLAYLIST-TYPE:<EVENT|VOD>
-}
-
 type VariantAttributes struct {
 	Bandwidth  uint64
 	ProgramID  uint64
@@ -180,19 +166,6 @@ type VariantAttributes struct {
 	Resolution string
 	Audio      string
 	Video      string
-}
-
-type VariantPlaylist struct {
-	URI            string
-	MediaPlaylists *MediaPlaylist
-	VariantAttributes
-}
-
-type MasterPlaylist struct {
-	buf bytes.Buffer
-
-	version          uint8
-	VariantPlaylists []*VariantPlaylist
 }
 
 type Playlist struct {
@@ -203,16 +176,14 @@ type Playlist struct {
 	TargetDuration float64
 	IFrameOnly     bool // EXT-X-I-FRAMES-ONLY
 	master         bool
+	live           bool
 
 	Segments []PlaylistSegment
 }
 
 // state of m3u and temporary store segments, stream inf...etc
 type States struct {
-	m3u       bool
-	listtype  ListType
-	xmedia    XMedia
-	streamInf *VariantAttributes
-	existKey  bool
-	key       *Key
+	master   bool
+	listtype ListType
+	segment  PlaylistSegment
 }
