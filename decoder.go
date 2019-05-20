@@ -71,12 +71,29 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		p.Segments = append(p.Segments, m)
 	case strings.HasPrefix(line, ExtStreamInf):
 		s.master = true
-		s.segmentTag = true
+		s.frameTag = true
 		v, err := NewVariant(line)
 		if err != nil {
 			return errors.Wrap(err, "new variant err")
 		}
 		s.segment = v
+	case strings.HasPrefix(line, ExtFrameStreamInf):
+		s.master = true
+		s.frameTag = false
+		v, err := NewVariant(line)
+		if err != nil {
+			return errors.Wrap(err, "new variant err")
+		}
+		v.IFrame = true
+		s.segment = v
+		p.Segments = append(p.Segments, v)
+	case strings.HasPrefix(line, ExtByteRange):
+		v := trimLine(line, ExtByteRange+":")
+		br, err := NewByteRange(v)
+		if err != nil {
+			return errors.Wrap(err, "new byte range err")
+		}
+		_ = br
 	}
 }
 
@@ -227,6 +244,12 @@ func decodeLine(p *Playlist, line string, s *States) error {
 //	}
 //	return nil
 //}
+
+func trimLine(line, trim string) string {
+	val := strings.TrimLeft(line, trim)
+	val = strings.Trim(v, "\n")
+	return val
+}
 
 func parseLine(line string) map[string]string {
 	m := map[string]string{}
