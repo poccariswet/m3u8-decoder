@@ -159,8 +159,7 @@ type VariantAttributes struct {
 	Video      string
 	FrameRate  float64
 	HDCPLevel  string
-	Width      int64
-	Height     int64
+	Resolution *Resolution
 
 	IFrame bool
 }
@@ -181,8 +180,8 @@ type Playlist struct {
 
 // state of m3u and temporary store segments, stream inf...etc
 type States struct {
-	master     bool
-	segmentTag bool
-	listtype   ListType
-	segment    PlaylistSegment
+	master   bool
+	frameTag bool
+	listtype ListType
+	segment  PlaylistSegment
 }
