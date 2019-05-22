@@ -22,7 +22,7 @@ func NewMedia(line string) (*MediaSeqment, error) {
 		Name:       item["NAME"],
 		Default:    item["DEFAULT"],
 		Autoselect: item["AUTOSELECT"],
-	}
+	}, nil
 }
 
 func (ms *MediaSeqment) String() string {

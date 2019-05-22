@@ -140,26 +140,26 @@ type MediaSeqment struct {
 	Autoselect string
 }
 
-type ByteRange struct {
+type ByteRangeSegment struct {
 	ByteRangeN int64 // EXT-X-BYTERANGE uri length
 	ByteRangeO int64 // EXT-X-BYTERANGE uri offset
 }
 
 // #EXT-X-STREAM-INF attributes
 type VariantAttributes struct {
-	URI        string
-	Name       string
-	Subtitle   string
-	Bandwidth  uint64
-	ProgramID  uint64
-	Codec      string
-	AudioCodec string
-	Resolution string
-	Audio      string
-	Video      string
-	FrameRate  float64
-	HDCPLevel  string
-	Resolution *Resolution
+	URI              string
+	Name             string
+	Subtitle         string
+	Bandwidth        uint32
+	AverageBandwidth uint32
+	ProgramID        uint32
+	Codec            string
+	AudioCodec       string
+	Audio            string
+	Video            string
+	FrameRate        float64
+	HDCPLevel        string
+	Resolution       *Resolution
 
 	IFrame bool
 }
@@ -180,6 +180,7 @@ type Playlist struct {
 
 // state of m3u and temporary store segments, stream inf...etc
 type States struct {
+	m3u8     bool
 	master   bool
 	frameTag bool
 	listtype ListType

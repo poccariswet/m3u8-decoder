@@ -7,7 +7,7 @@ import (
 
 func trimLine(line, trim string) string {
 	val := strings.TrimLeft(line, trim)
-	val = strings.Trim(v, "\n")
+	val = strings.Trim(val, "\n")
 	return val
 }
 

@@ -13,7 +13,8 @@ type Resolution struct {
 	Height uint16
 }
 
-func NewResolution(val string, has bool) (*Resolution, error) {
+func NewResolution(item map[string]string, param string) (*Resolution, error) {
+	val, has := item[param]
 	if !has {
 		return nil, nil
 	}
@@ -39,6 +40,6 @@ func NewResolution(val string, has bool) (*Resolution, error) {
 	}, nil
 }
 
-func (r *Resolution) String() {
+func (r *Resolution) String() string {
 	return "RESOLUTION"
 }
