@@ -38,3 +38,7 @@ func NewResolution(val string, has bool) (*Resolution, error) {
 		Height: uint16(h),
 	}, nil
 }
+
+func (r *Resolution) String() {
+	return "RESOLUTION"
+}
