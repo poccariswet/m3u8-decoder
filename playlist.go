@@ -9,6 +9,7 @@ func NewPlaylist() *Playlist {
 	return pl
 }
 
+// TODO display playlist contents
 func (p *Playlist) String() string {
 	if p.master {
 		return "MASTER PLAYLIST"
