@@ -9,7 +9,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func decode(buf *bytes.Buffer) (*Playlist, ListType, error) {
+func decode(buf *bytes.Buffer) (*Playlist, error) {
 	playlist := NewPlaylist()
 	var end bool
 	states := new(States)
@@ -19,7 +19,7 @@ func decode(buf *bytes.Buffer) (*Playlist, ListType, error) {
 		if err == io.EOF {
 			end = true
 		} else if err != nil {
-			return nil, ERRTYPE, err
+			return nil, err
 		}
 
 		if len(line) < 1 || line == "\r" {
@@ -28,33 +28,27 @@ func decode(buf *bytes.Buffer) (*Playlist, ListType, error) {
 
 		line = strings.TrimSpace(line)
 		if err := decodeLine(playlist, line, states); err != nil {
-			return playlist, ERRTYPE, err
+			return playlist, err
 		}
 	}
 
-	switch states.listtype {
-	case MASTER:
-		return playlist, MASTER, nil
-	case MEDIA:
-		return playlist, MEDIA, nil
-	}
-
-	return nil, ERRTYPE, errors.New("not playlist")
+	return playlist, nil
 }
 
-func DecodeFrom(r io.Reader) (*Playlist, ListType, error) {
+func DecodeFrom(r io.Reader) (*Playlist, error) {
 	buf := new(bytes.Buffer)
 	_, err := buf.ReadFrom(r)
 	if err != nil {
-		return nil, ERRTYPE, err
+		return nil, err
 	}
 	return decode(buf)
 }
 
 func decodeLine(p *Playlist, line string, s *States) error {
-	if s.m3u8 && line != EXTM3U {
+	if !s.m3u8 && line != EXTM3U {
 		return errors.New("invalid playlist, not exist #EXTM3U")
 	}
+
 	switch {
 	case line == EXTM3U:
 		s.m3u8 = true
@@ -70,7 +64,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		}
 		p.Segments = append(p.Segments, m)
 	case strings.HasPrefix(line, ExtStreamInf):
-		s.master = true
+		p.master = true
 		s.frameTag = true
 		v, err := NewVariant(line)
 		if err != nil {
@@ -78,7 +72,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		}
 		s.segment = v
 	case strings.HasPrefix(line, ExtFrameStreamInf):
-		s.master = true
+		p.master = true
 		s.frameTag = false
 		v, err := NewVariant(line)
 		if err != nil {
@@ -94,6 +88,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 			return errors.Wrap(err, "new byte range err")
 		}
 		_ = br
+	default:
 	}
 	return nil
 }
