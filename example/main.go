@@ -9,12 +9,18 @@ import (
 )
 
 func main() {
-	media, err := os.Open("./media.m3u8")
+	path := os.Getenv("GOPATH")
+	if path == "" {
+		panic("$GOPATH is empty")
+	}
+
+	master, err := os.Open(path + "/src/github.com/poccariswet/m3u8-decoder/example/playlist/master.m3u8")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
-	master, err := os.Open("./master.m3u8")
+
+	media, err := os.Open(path + "/src/github.com/poccariswet/m3u8-decoder/example/playlist/media.m3u8")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
