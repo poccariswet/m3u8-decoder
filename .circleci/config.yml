@@ -1,0 +1,21 @@
+version: 2
+jobs:
+  build:
+    docker:
+    working_directory: /go/src/github.com/poccariswet/m3u8-decoder
+      - image: circleci/golang:1.12
+        environment:
+          GO111MODULE: "on"
+          GOPATH: /go
+
+    steps:
+      - checkout
+
+      - run:
+          name: build
+          command: go build
+
+      - run:
+          name: test
+          command: DEBUG=true go test -v  ./...
+
