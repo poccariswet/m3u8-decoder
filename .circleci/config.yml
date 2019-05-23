@@ -1,8 +1,8 @@
 version: 2
 jobs:
   build:
-    docker:
     working_directory: /go/src/github.com/poccariswet/m3u8-decoder
+    docker:
       - image: circleci/golang:1.12
         environment:
           GO111MODULE: "on"
