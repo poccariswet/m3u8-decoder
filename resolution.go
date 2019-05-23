@@ -19,7 +19,7 @@ func NewResolution(item map[string]string, param string) (*Resolution, error) {
 		return nil, nil
 	}
 	s := strings.Split(val, "x")
-	if len(s) == 2 {
+	if len(s) != 2 {
 		return nil, errors.New("invalid RESOLUTION value")
 	}
 
