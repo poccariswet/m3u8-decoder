@@ -16,7 +16,10 @@ func parseLine(line string) map[string]string {
 	lines := strings.Split(line, ",")
 
 	for _, v := range lines {
+		v = strings.Trim(v, "\n")
+		v = strings.TrimSpace(v)
 		s := strings.Split(v, "=")
+
 		m[s[0]] = strings.Trim(s[1], `"`)
 	}
 
@@ -51,4 +54,17 @@ func extractFloat64(item map[string]string, param string) (float64, error) {
 	}
 
 	return fv, nil
+}
+
+func extractBool(item map[string]string, param string) (bool, error) {
+	v, has := item[param]
+	if !has {
+		return false, nil
+	}
+
+	if v == "YES" {
+		return true, nil
+	} else {
+		return false, nil
+	}
 }

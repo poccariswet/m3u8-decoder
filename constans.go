@@ -19,7 +19,6 @@ const (
 
 	// Encrypt
 	METHOD            = "METHOD"
-	URI               = "URI"
 	IV                = "IV"
 	KEYFORMAT         = "KEYFORMAT"
 	KeyFormatVersions = "KEYFORMATVERSIONS"
@@ -41,9 +40,8 @@ const (
 	PRECISE    = "PRECISE"
 
 	// Session
-	DATAID   = "DATA-ID"
-	VALUE    = "VALUE"
-	LANGUAGE = "LANGUAGE"
+	DATAID = "DATA-ID"
+	VALUE  = "VALUE"
 
 	// Variant Playlist
 	ExtSessionKey      = `#EXT-X-SESSION-KEY`
@@ -63,11 +61,13 @@ const (
 	// MediaType
 	TYPE            = "TYPE"
 	GROUPID         = "GROUP-ID"
+	LANGUAGE        = "LANGUAGE"
 	ASSOCLANGUAGE   = "ASSOC-LANGUAGE"
 	NAME            = "NAME"
 	AUTOSELECT      = "AUTOSELECT"
-	DEFAULT         = "DEFAULT"
 	FORCED          = "FORCED"
+	DEFAULT         = "DEFAULT"
+	URI             = "URI"
 	INSTREAMID      = "INSTREAM-ID"
 	CHARACTERISTICS = "CHARACTERISTICS"
 	CHANNELS        = "CHANNELS"

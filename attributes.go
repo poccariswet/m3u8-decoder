@@ -131,13 +131,18 @@ type Map struct {
 
 // The EXT-X-MEDIA tag is used to relate Playlists that contain alternative renditions of the same content.
 type MediaSeqment struct {
-	URI        string
-	Type       string
-	GroupID    string
-	Language   string
-	Name       string
-	Default    string
-	Autoselect string
+	Type            string
+	GroupID         string
+	Language        string
+	AssocLanguage   string
+	Name            string
+	Autoselect      bool
+	Forced          bool
+	Default         bool
+	URI             string
+	InstreamID      string
+	Characteristics string
+	Channels        string
 }
 
 type ByteRangeSegment struct {
