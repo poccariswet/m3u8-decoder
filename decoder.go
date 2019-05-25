@@ -82,8 +82,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		s.segment = v
 		p.Segments = append(p.Segments, v)
 	case strings.HasPrefix(line, ExtByteRange):
-		v := trimLine(line, ExtByteRange+":")
-		br, err := NewByteRange(v)
+		br, err := NewByteRange(line)
 		if err != nil {
 			return errors.Wrap(err, "new byte range err")
 		}

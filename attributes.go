@@ -146,8 +146,8 @@ type MediaSeqment struct {
 }
 
 type ByteRangeSegment struct {
-	ByteRangeN int64 // EXT-X-BYTERANGE uri length
-	ByteRangeO int64 // EXT-X-BYTERANGE uri offset
+	Length int64 // the length of the sub-range in bytes
+	Offset int64 // a byte offset from the beginning of the resource
 }
 
 // #EXT-X-STREAM-INF attributes
