@@ -27,27 +27,27 @@ func NewVariant(line string) (*VariantAttributes, error) {
 
 	resolution, err := NewResolution(item, RESOLUTION)
 	if err != nil {
-		return nil, errors.Wrap(err, "resolution parse err: ")
+		return nil, errors.Wrap(err, "resolution parse err")
 	}
 
 	bandwidth, err := extractUint64(item, BANDWIDTH)
 	if err != nil {
-		return nil, errors.Wrap(err, "extractUint64 err: ")
+		return nil, errors.Wrap(err, "extractUint64 err")
 	}
 
 	averageBandwidth, err := extractUint64(item, AVERAGEBANDWIDTH)
 	if err != nil {
-		return nil, errors.Wrap(err, "extractUint64 err: ")
+		return nil, errors.Wrap(err, "extractUint64 err")
 	}
 
 	programID, err := extractUint64(item, PROGRAMID)
 	if err != nil {
-		return nil, errors.Wrap(err, "extractUint64 err: ")
+		return nil, errors.Wrap(err, "extractUint64 err")
 	}
 
 	frameRate, err := extractFloat64(item, FRAMERATE)
 	if err != nil {
-		return nil, errors.Wrap(err, "extractFloat64 err: ")
+		return nil, errors.Wrap(err, "extractFloat64 err")
 	}
 
 	return &VariantAttributes{

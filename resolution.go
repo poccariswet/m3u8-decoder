@@ -26,12 +26,12 @@ func NewResolution(item map[string]string, param string) (*Resolution, error) {
 	// width
 	w, err := strconv.ParseUint(s[0], 10, 16)
 	if err != nil {
-		return nil, errors.Wrap(err, "parse uint err: ")
+		return nil, errors.Wrap(err, "parse uint err")
 	}
 	// height
 	h, err := strconv.ParseUint(s[1], 10, 16)
 	if err != nil {
-		return nil, errors.Wrap(err, "parse uint err: ")
+		return nil, errors.Wrap(err, "parse uint err")
 	}
 
 	return &Resolution{

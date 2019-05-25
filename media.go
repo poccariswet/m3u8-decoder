@@ -24,17 +24,17 @@ func NewMedia(line string) (*MediaSeqment, error) {
 
 	autoselect, err := extractBool(item, AUTOSELECT)
 	if err != nil {
-		return nil, errors.Wrap(err, "extractBool err: ")
+		return nil, errors.Wrap(err, "extractBool err")
 	}
 
 	forced, err := extractBool(item, FORCED)
 	if err != nil {
-		return nil, errors.Wrap(err, "extractBool err: ")
+		return nil, errors.Wrap(err, "extractBool err")
 	}
 
 	defaul, err := extractBool(item, DEFAULT)
 	if err != nil {
-		return nil, errors.Wrap(err, "extractBool err: ")
+		return nil, errors.Wrap(err, "extractBool err")
 	}
 
 	return &MediaSeqment{
