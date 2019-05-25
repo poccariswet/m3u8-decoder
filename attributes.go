@@ -116,17 +116,16 @@ const (
 )
 
 // For decrypt media segments
-type Key struct {
+type KeySegment struct {
 	Method string
 	IV     string // Initialization Vector
 	URI    string
 }
 
-// EXT-X-MAP
-type Map struct {
-	URI        string
-	ByteRangeN int64 // EXT-X-BYTERANGE uri length
-	ByteRangeO int64 // EXT-X-BYTERANGE uri offset
+// EXT-X-MAP segment
+type MapSeqment struct {
+	URI       string
+	ByteRange *ByteRangeSegment
 }
 
 // The EXT-X-MEDIA tag is used to relate Playlists that contain alternative renditions of the same content.
@@ -151,7 +150,7 @@ type ByteRangeSegment struct {
 }
 
 // #EXT-X-STREAM-INF attributes
-type VariantAttributes struct {
+type VariantSeqment struct {
 	URI              string
 	Name             string
 	Subtitle         string

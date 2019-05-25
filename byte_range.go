@@ -18,8 +18,11 @@ func NewByteRange(line string) (*ByteRangeSegment, error) {
 		return nil, nil
 	}
 
-	val := line[len(ExtByteRange+":"):]
-	vals := strings.Split(val, "@")
+	if strings.HasPrefix(line, ExtByteRange) {
+		line = line[len(ExtByteRange+":"):]
+	}
+
+	vals := strings.Split(line, "@")
 	if len(vals) != 2 {
 		return nil, errors.New("ByteRange value is invalid")
 	}
