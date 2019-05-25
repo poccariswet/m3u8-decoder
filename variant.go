@@ -1,27 +1,30 @@
 package m3u8
 
-import "github.com/pkg/errors"
+import (
+	"github.com/pkg/errors"
+)
 
 // NewVariant parse line has EXT-X-STREAM-INF or EXT-X-I-FRAME-STREAM-INF
-func NewVariant(line string) (*VariantAttributes, error) {
-	item := parseLine(line[len(ExtFrameStreamInf+":"):])
+func NewVariant(line string) (*VariantSeqment, error) {
+	item := parseLine(line)
 	/*
-			type VariantAttributes struct {
-				URI              string
-				Name             string
-				Subtitle         string
-				Bandwidth        uint32
-				AverageBandwidth uint32
-				ProgramID        uint32
-				Codec            string
-				AudioCodec       string
-				Audio            string
-				Video            string
-				FrameRate        float64
-				HDCPLevel        string
-				Resolution       *Resolution
+		type VariantSeqment struct {
+			IFrame bool
 
-				IFrame bool
+			URI              string
+			Bandwidth        uint32
+			Name             string
+			Subtitle         string
+			AverageBandwidth uint32
+			ProgramID        uint32
+			Codec            string
+			AudioCodec       string
+			Audio            string
+			Video            string
+			FrameRate        float64
+			ClosedCaptions   string
+			HDCPLevel        string
+			Resolution       *Resolution
 		}
 	*/
 
@@ -50,22 +53,23 @@ func NewVariant(line string) (*VariantAttributes, error) {
 		return nil, errors.Wrap(err, "extractFloat64 err")
 	}
 
-	return &VariantAttributes{
+	return &VariantSeqment{
 		URI:              item[URI],
+		Bandwidth:        uint32(bandwidth),
 		Name:             item[NAME],
 		Subtitle:         item[SUBTITLES],
-		Bandwidth:        uint32(bandwidth),
 		AverageBandwidth: uint32(averageBandwidth),
 		ProgramID:        uint32(programID),
 		Codec:            item[CODECS],
 		Audio:            item[AUDIO],
 		Video:            item[VIDEO],
 		FrameRate:        frameRate,
+		ClosedCaptions:   item[CLOSEDCAPTIONS],
 		HDCPLevel:        item[HDCPLEVEL],
 		Resolution:       resolution,
 	}, nil
 }
 
-func (va *VariantAttributes) String() string {
-	return "VariantAttributes"
+func (va *VariantSeqment) String() string {
+	return "VariantSeqment"
 }

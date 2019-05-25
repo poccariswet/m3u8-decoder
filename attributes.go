@@ -149,12 +149,14 @@ type ByteRangeSegment struct {
 	Offset int64 // a byte offset from the beginning of the resource
 }
 
-// #EXT-X-STREAM-INF attributes
+// #EXT-X-STREAM-INF or EXT-X-I-FRAME-STREAM-INF attributes
 type VariantSeqment struct {
+	IFrame bool
+
 	URI              string
+	Bandwidth        uint32
 	Name             string
 	Subtitle         string
-	Bandwidth        uint32
 	AverageBandwidth uint32
 	ProgramID        uint32
 	Codec            string
@@ -162,10 +164,9 @@ type VariantSeqment struct {
 	Audio            string
 	Video            string
 	FrameRate        float64
+	ClosedCaptions   string
 	HDCPLevel        string
 	Resolution       *Resolution
-
-	IFrame bool
 }
 
 type Playlist struct {

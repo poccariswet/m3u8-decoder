@@ -66,6 +66,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 	case strings.HasPrefix(line, ExtStreamInf):
 		p.master = true
 		s.frameTag = true
+		line = line[len(ExtStreamInf+":"):]
 		v, err := NewVariant(line)
 		if err != nil {
 			return errors.Wrap(err, "new variant err")
@@ -74,6 +75,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 	case strings.HasPrefix(line, ExtFrameStreamInf):
 		p.master = true
 		s.frameTag = false
+		line = line[len(ExtFrameStreamInf+":"):]
 		v, err := NewVariant(line)
 		if err != nil {
 			return errors.Wrap(err, "new variant err")
