@@ -52,6 +52,8 @@ func decodeLine(p *Playlist, line string, s *States) error {
 	switch {
 	case line == EXTM3U:
 		s.m3u8 = true
+	case strings.HasPrefix(line, ExtENDList):
+		p.live = false
 	case strings.HasPrefix(line, ExtVersion):
 		_, err := fmt.Sscanf(line, ExtVersion+":%d", &p.version)
 		if err != nil {
