@@ -4,7 +4,7 @@ const (
 
 	// Playlist
 	EXTM3U                   = `#EXTM3U`
-	ExtENDLIST               = `#EXT-X-ENDLIST`
+	ExtENDList               = `#EXT-X-ENDLIST`
 	ExtTargetDutation        = `#EXT-X-TARGETDURATION`
 	ExtAllowCache            = `#EXT-X-ALLOW-CACHE`
 	ExtDiscontinuitySequence = `#EXT-X-DISCONTINUITY-SEQUENCE`
@@ -54,7 +54,7 @@ const (
 	ExtDateRange       = `#EXT-X-DATERANGE`
 	ExtMap             = `#EXT-X-MAP`
 	ExtSessionData     = `#EXT-X-SESSION-DATA`
-	ExtEXTINF          = `#EXTINF`
+	EXTINF             = `#EXTINF`
 	ExtByteRange       = `#EXT-X-BYTERANGE`
 	ExtStart           = `#EXT-X-START`
 	ExtMedia           = `#EXT-X-MEDIA`

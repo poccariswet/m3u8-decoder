@@ -59,6 +59,14 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		if err != nil {
 			return errors.Wrap(err, "invalid scan version")
 		}
+	case strings.HasPrefix(line, EXTINF):
+		inf, err := NewExtInf(line)
+		if err != nil {
+			return errors.Wrap(err, "new extinf err")
+		}
+		s.master = false
+		s.segment = inf
+		s.segmentTag = true
 	case strings.HasPrefix(line, ExtMedia):
 		m, err := NewMedia(line)
 		if err != nil {
@@ -67,7 +75,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		p.Segments = append(p.Segments, m)
 	case strings.HasPrefix(line, ExtStreamInf):
 		p.master = true
-		s.frameTag = true
+		s.segmentTag = true
 		line = line[len(ExtStreamInf+":"):]
 		v, err := NewVariant(line)
 		if err != nil {
@@ -76,7 +84,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		s.segment = v
 	case strings.HasPrefix(line, ExtFrameStreamInf):
 		p.master = true
-		s.frameTag = false
+		s.segmentTag = false
 		line = line[len(ExtFrameStreamInf+":"):]
 		v, err := NewVariant(line)
 		if err != nil {

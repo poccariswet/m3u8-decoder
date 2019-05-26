@@ -151,8 +151,8 @@ type ByteRangeSegment struct {
 	Offset int64 // a byte offset from the beginning of the resource
 }
 
-// #EXTINF attribute
-type ExtInf struct {
+// #EXTINF attribute and, under uri
+type InfSegment struct {
 	Duration float64
 	URI      string
 }
