@@ -117,9 +117,11 @@ const (
 
 // For decrypt media segments
 type KeySegment struct {
-	Method string
-	IV     string // Initialization Vector
-	URI    string
+	Method            string
+	IV                string // Initialization Vector
+	URI               string
+	KeyFormat         string
+	KeyFormatVersions string
 }
 
 // EXT-X-MAP segment

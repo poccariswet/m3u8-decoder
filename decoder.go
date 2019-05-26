@@ -95,6 +95,12 @@ func decodeLine(p *Playlist, line string, s *States) error {
 			return errors.Wrap(err, "new map err")
 		}
 		p.Segments = append(p.Segments, m)
+	case strings.HasPrefix(line, ExtKey):
+		key, err := NewKey(line)
+		if err != nil {
+			return errors.Wrap(err, "new key err")
+		}
+		p.Segments = append(p.Segments, key)
 	default:
 	}
 	return nil

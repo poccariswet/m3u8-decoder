@@ -14,14 +14,17 @@ const (
 	ExtMediaSequence         = `#EXT-X-MEDIA-SEQUENCE`
 	ExtVersion               = `#EXT-X-VERSION`
 
+	// Utility tag
+	URI = "URI"
+
 	// ByteRange
 	ByteRange = "BYTERANGE"
 
-	// Encrypt
+	// Encrypt key
 	METHOD            = "METHOD"
 	IV                = "IV"
 	KEYFORMAT         = "KEYFORMAT"
-	KeyFormatVersions = "KEYFORMATVERSIONS"
+	KEYFORMATVERSIONS = "KEYFORMATVERSIONS"
 
 	// DateRange
 	ID              = "ID"
@@ -67,7 +70,6 @@ const (
 	AUTOSELECT      = "AUTOSELECT"
 	FORCED          = "FORCED"
 	DEFAULT         = "DEFAULT"
-	URI             = "URI"
 	INSTREAMID      = "INSTREAM-ID"
 	CHARACTERISTICS = "CHARACTERISTICS"
 	CHANNELS        = "CHANNELS"
