@@ -4,9 +4,9 @@ import (
 	"github.com/pkg/errors"
 )
 
-func NewMap(line string) (*MapSeqment, error) {
+func NewMap(line string) (*MapSegment, error) {
 	/*
-		type MapSeqment struct {
+		type MapSegment struct {
 			URI       string
 			ByteRange *ByteRangeSegment
 		}
@@ -19,12 +19,12 @@ func NewMap(line string) (*MapSeqment, error) {
 		return nil, errors.Wrap(err, "new byte range")
 	}
 
-	return &MapSeqment{
+	return &MapSegment{
 		URI:       item[URI],
 		ByteRange: br,
 	}, nil
 }
 
-func (ms *MapSeqment) String() string {
-	return "MapSeqment"
+func (ms *MapSegment) String() string {
+	return "MapSegment"
 }

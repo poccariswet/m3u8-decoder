@@ -125,13 +125,13 @@ type KeySegment struct {
 }
 
 // EXT-X-MAP segment
-type MapSeqment struct {
+type MapSegment struct {
 	URI       string
 	ByteRange *ByteRangeSegment
 }
 
 // The EXT-X-MEDIA tag is used to relate Playlists that contain alternative renditions of the same content.
-type MediaSeqment struct {
+type MediaSegment struct {
 	Type            string
 	GroupID         string
 	Language        string
@@ -151,8 +151,14 @@ type ByteRangeSegment struct {
 	Offset int64 // a byte offset from the beginning of the resource
 }
 
+// #EXTINF attribute
+type ExtInf struct {
+	Duration float64
+	URI      string
+}
+
 // #EXT-X-STREAM-INF or EXT-X-I-FRAME-STREAM-INF attributes
-type VariantSeqment struct {
+type VariantSegment struct {
 	IFrame bool
 
 	URI              string
@@ -187,9 +193,9 @@ type Playlist struct {
 
 // state of m3u and temporary store segments, stream inf...etc
 type States struct {
-	m3u8     bool
-	master   bool
-	frameTag bool
-	listtype ListType
-	segment  PlaylistSegment
+	m3u8       bool
+	master     bool
+	segmentTag bool
+	listtype   ListType
+	segment    PlaylistSegment
 }

@@ -3,10 +3,10 @@ package m3u8
 import "github.com/pkg/errors"
 
 // NewMedia parse line has #EXT-X-MEDIA
-func NewMedia(line string) (*MediaSeqment, error) {
+func NewMedia(line string) (*MediaSegment, error) {
 	item := parseLine(line[len(ExtMedia+":"):])
 	/*
-		type MediaSeqment struct {
+		type MediaSegment struct {
 			Type            string
 			GroupID         string
 			Language        string
@@ -37,7 +37,7 @@ func NewMedia(line string) (*MediaSeqment, error) {
 		return nil, errors.Wrap(err, "extractBool err")
 	}
 
-	return &MediaSeqment{
+	return &MediaSegment{
 		Type:            item[TYPE],
 		GroupID:         item[GROUPID],
 		Language:        item[LANGUAGE],
@@ -53,6 +53,6 @@ func NewMedia(line string) (*MediaSeqment, error) {
 	}, nil
 }
 
-func (ms *MediaSeqment) String() string {
-	return "MediaSeqment"
+func (ms *MediaSegment) String() string {
+	return "MediaSegment"
 }

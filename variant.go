@@ -5,10 +5,10 @@ import (
 )
 
 // NewVariant parse line has EXT-X-STREAM-INF or EXT-X-I-FRAME-STREAM-INF
-func NewVariant(line string) (*VariantSeqment, error) {
+func NewVariant(line string) (*VariantSegment, error) {
 	item := parseLine(line)
 	/*
-		type VariantSeqment struct {
+		type VariantSegment struct {
 			IFrame bool
 
 			URI              string
@@ -53,7 +53,7 @@ func NewVariant(line string) (*VariantSeqment, error) {
 		return nil, errors.Wrap(err, "extractFloat64 err")
 	}
 
-	return &VariantSeqment{
+	return &VariantSegment{
 		URI:              item[URI],
 		Bandwidth:        uint32(bandwidth),
 		Name:             item[NAME],
@@ -70,6 +70,6 @@ func NewVariant(line string) (*VariantSeqment, error) {
 	}, nil
 }
 
-func (va *VariantSeqment) String() string {
-	return "VariantSeqment"
+func (va *VariantSegment) String() string {
+	return "VariantSegment"
 }
