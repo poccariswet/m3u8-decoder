@@ -3,6 +3,7 @@ package m3u8
 import (
 	"strconv"
 	"strings"
+	"time"
 )
 
 func trimLine(line, trim string) string {
@@ -24,6 +25,25 @@ func parseLine(line string) map[string]string {
 	}
 
 	return m
+}
+
+// The date/time representation is ISO/IEC 8601:2004 [ISO_8601]
+func parseFullTime(line string) (time.Time, error) {
+	layouts := []string{
+		"2006-01-02T15:04:05.999999999Z0700",
+		time.RFC3339Nano,
+		"2006-01-02T15:04:05.999999999Z07",
+	}
+	var (
+		err error
+		t   time.Time
+	)
+	for _, layout := range layouts {
+		if t, err = time.Parse(layout, line); err == nil {
+			return t, nil
+		}
+	}
+	return t, err
 }
 
 // extract value in item, and the value parse uint64

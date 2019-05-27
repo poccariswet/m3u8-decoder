@@ -111,6 +111,13 @@ func decodeLine(p *Playlist, line string, s *States) error {
 			return errors.Wrap(err, "new key err")
 		}
 		p.Segments = append(p.Segments, key)
+
+	case strings.HasPrefix(line, ExtProgramDateTime):
+		dt, err := NewProgramDateTime(line)
+		if err != nil {
+			return errors.Wrap(err, "new program date time err")
+		}
+		p.Segments = append(p.Segments, pd)
 	default:
 	}
 	return nil

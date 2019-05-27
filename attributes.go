@@ -1,5 +1,7 @@
 package m3u8
 
+import "time"
+
 /*
 	sample m3u8 playlist
 
@@ -114,6 +116,11 @@ const (
 	EVENT PlaylistType = iota
 	VOD
 )
+
+// EXT-X-PROGRAM-DATE-TIME tag segment
+type DateTimeSegment struct {
+	Time time.Time
+}
 
 // For decrypt media segments
 type KeySegment struct {
