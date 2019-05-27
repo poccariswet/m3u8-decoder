@@ -117,7 +117,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		if err != nil {
 			return errors.Wrap(err, "new program date time err")
 		}
-		p.Segments = append(p.Segments, pd)
+		p.Segments = append(p.Segments, dt)
 	default:
 	}
 	return nil
