@@ -153,6 +153,20 @@ type MediaSegment struct {
 	Channels        string
 }
 
+// EXT-X-DATERANGE range of time defined by a starting and ending date with a set of attribute / value pairs
+type DateRangeSegment struct {
+	ID              string
+	Class           string
+	StartDate       time.Time
+	EndDate         time.Time
+	Duration        float64
+	PlannedDuration float64
+	Scte35Cmd       string
+	Scte35Out       string
+	Scte35In        string
+	EndOnNext       bool
+}
+
 type ByteRangeSegment struct {
 	Length int64 // the length of the sub-range in bytes
 	Offset int64 // a byte offset from the beginning of the resource
