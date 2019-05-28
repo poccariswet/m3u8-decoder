@@ -207,6 +207,12 @@ type SessionKeySegment struct {
 	KeyFormatVersions string
 }
 
+// EXT-X-START attributes
+type StartSegment struct {
+	TimeOffset float64
+	Precise    bool
+}
+
 type Playlist struct {
 	version               uint8
 	PlaylistType          string

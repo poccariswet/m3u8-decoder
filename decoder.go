@@ -138,6 +138,13 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		}
 		p.Segments = append(p.Segments, sd)
 
+	case strings.HasPrefix(line, ExtStart):
+		start, err := NewStart(line)
+		if err != nil {
+			return errors.Wrap(err, "new start err")
+		}
+		p.Segments = append(p.Segments, start)
+
 		/* playlist tags */
 	case strings.HasPrefix(line, ExtPlaylistType):
 		_, err := fmt.Sscanf(line, ExtPlaylistType+":%s", &p.PlaylistType)
