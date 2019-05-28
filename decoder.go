@@ -144,6 +144,8 @@ func decodeLine(p *Playlist, line string, s *States) error {
 			return errors.Wrap(err, "new start err")
 		}
 		p.Segments = append(p.Segments, start)
+	case strings.HasPrefix(line, ExtIndependentSegments):
+		p.IndependentSegments = true
 
 		/* playlist tags */
 	case strings.HasPrefix(line, ExtPlaylistType):

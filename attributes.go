@@ -220,6 +220,7 @@ type Playlist struct {
 	MediaSequence         uint64
 	DiscontinuitySequence uint64
 	TargetDuration        float64
+	IndependentSegments   bool
 	IFrameOnly            bool // EXT-X-I-FRAMES-ONLY
 	master                bool
 	live                  bool
