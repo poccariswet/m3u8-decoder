@@ -109,14 +109,6 @@ const (
 	MEDIA
 )
 
-// EXT-X-PLAYLIST-TYPE tag with a value of either EVENT or VOD
-type PlaylistType uint
-
-const (
-	EVENT PlaylistType = iota
-	VOD
-)
-
 // EXT-X-PROGRAM-DATE-TIME tag segment
 type DateTimeSegment struct {
 	Time time.Time
@@ -200,7 +192,7 @@ type VariantSegment struct {
 
 type Playlist struct {
 	version               uint8
-	PlaylistType          PlaylistType
+	PlaylistType          string
 	AllowCache            bool
 	MediaSequence         uint64
 	DiscontinuitySequence uint64
