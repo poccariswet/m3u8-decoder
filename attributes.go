@@ -199,15 +199,16 @@ type VariantSegment struct {
 }
 
 type Playlist struct {
-	version        uint8
-	PlaylistType   PlaylistType
-	AllowCache     bool
-	MediaSequence  uint64
-	TargetDuration float64
-	IFrameOnly     bool // EXT-X-I-FRAMES-ONLY
-	master         bool
-	live           bool
-	Discontinty    bool // EXT-X-DISCONTINUITY encoding discontinuity between the media segment that follows it and the one that preceded it.
+	version               uint8
+	PlaylistType          PlaylistType
+	AllowCache            bool
+	MediaSequence         uint64
+	DiscontinuitySequence uint64
+	TargetDuration        float64
+	IFrameOnly            bool // EXT-X-I-FRAMES-ONLY
+	master                bool
+	live                  bool
+	Discontinty           bool // EXT-X-DISCONTINUITY encoding discontinuity between the media segment that follows it and the one that preceded it.
 
 	Segments []PlaylistSegment
 }

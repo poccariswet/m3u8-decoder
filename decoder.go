@@ -123,6 +123,37 @@ func decodeLine(p *Playlist, line string, s *States) error {
 			return errors.Wrap(err, "new date range err")
 		}
 		p.Segments = append(p.Segments, dr)
+
+		/* playlist tags */
+	case strings.HasPrefix(line, ExtPlaylistType):
+		p.PlaylistType = line[len(ExtPlaylistType+":")]
+		_, err := fmt.Sscanf(line, ExtPlaylistType+":%s", &p.PlaylistType)
+		if err != nil {
+			return errors.Wrap(err, "invalid scan version")
+		}
+	case strings.HasPrefix(line, ExtIFramesOnly):
+		p.IFrameOnly = true
+	case strings.HasPrefix(line, ExtTargetDutation):
+		_, err := fmt.Sscanf(line, ExtTargetDutation+":%f", &p.TargetDuration)
+		if err != nil {
+			return errors.Wrap(err, "invalid scan version")
+		}
+	case strings.HasPrefix(line, ExtDiscontinuitySequence):
+		_, err := fmt.Sscanf(line, ExtTargetDutation+":%d", &p.DiscontinuitySequence)
+		if err != nil {
+			return errors.Wrap(err, "invalid scan version")
+		}
+	case strings.HasPrefix(line, ExtAllowCache):
+		cache, err := parseBool(line[len(ExtAllowCache+":"):])
+		if err != nil {
+			return errors.Wrap(err, "parseBool err")
+		}
+		p.AllowCache = cache
+	case strings.HasPrefix(line, ExtMediaSequence):
+		_, err := fmt.Sscanf(line, ExtTargetDutation+":%d", &p.MediaSequence)
+		if err != nil {
+			return errors.Wrap(err, "invalid scan version")
+		}
 	default:
 	}
 	return nil

@@ -27,6 +27,14 @@ func parseLine(line string) map[string]string {
 	return m
 }
 
+func parseBool(line string) bool {
+	if line == "YES" {
+		return true
+	} else {
+		return false
+	}
+}
+
 // The date/time representation is ISO/IEC 8601:2004 [ISO_8601]
 func parseFullTime(line string) (time.Time, error) {
 	layouts := []string{
