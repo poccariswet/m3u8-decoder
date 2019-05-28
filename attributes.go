@@ -190,6 +190,14 @@ type VariantSegment struct {
 	Resolution       *Resolution
 }
 
+// EXT-X-SESSION-DATA attributes
+type SessionDataSegment struct {
+	DataID   string
+	Value    string
+	URI      string
+	Language string
+}
+
 type Playlist struct {
 	version               uint8
 	PlaylistType          string
