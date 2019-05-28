@@ -198,6 +198,15 @@ type SessionDataSegment struct {
 	Language string
 }
 
+// EXT-X-SESSION-KEY attributes
+type SessionKeySegment struct {
+	Method            string
+	IV                string // Initialization Vector
+	URI               string
+	KeyFormat         string
+	KeyFormatVersions string
+}
+
 type Playlist struct {
 	version               uint8
 	PlaylistType          string

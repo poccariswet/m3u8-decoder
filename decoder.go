@@ -123,6 +123,14 @@ func decodeLine(p *Playlist, line string, s *States) error {
 			return errors.Wrap(err, "new date range err")
 		}
 		p.Segments = append(p.Segments, dr)
+
+		/* session tags */
+	case strings.HasPrefix(line, ExtSessionKey):
+		sk, err := NewSessionKey(line)
+		if err != nil {
+			return errors.Wrap(err, "new session key err")
+		}
+		p.Segments = append(p.Segments, sk)
 	case strings.HasPrefix(line, ExtSessionData):
 		sd, err := NewSessionData(line)
 		if err != nil {
