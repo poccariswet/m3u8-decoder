@@ -12,6 +12,11 @@ jobs:
       - checkout
 
       - run:
+          name: setup
+          command: |
+            go mod download
+
+      - run:
           name: build
           command: go build
 
