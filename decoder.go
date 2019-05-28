@@ -126,7 +126,6 @@ func decodeLine(p *Playlist, line string, s *States) error {
 
 		/* playlist tags */
 	case strings.HasPrefix(line, ExtPlaylistType):
-		p.PlaylistType = line[len(ExtPlaylistType+":")]
 		_, err := fmt.Sscanf(line, ExtPlaylistType+":%s", &p.PlaylistType)
 		if err != nil {
 			return errors.Wrap(err, "invalid scan version")
@@ -144,11 +143,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 			return errors.Wrap(err, "invalid scan version")
 		}
 	case strings.HasPrefix(line, ExtAllowCache):
-		cache, err := parseBool(line[len(ExtAllowCache+":"):])
-		if err != nil {
-			return errors.Wrap(err, "parseBool err")
-		}
-		p.AllowCache = cache
+		p.AllowCache = parseBool(line[len(ExtAllowCache+":"):])
 	case strings.HasPrefix(line, ExtMediaSequence):
 		_, err := fmt.Sscanf(line, ExtTargetDutation+":%d", &p.MediaSequence)
 		if err != nil {
