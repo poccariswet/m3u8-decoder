@@ -64,7 +64,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		if err != nil {
 			return errors.Wrap(err, "new extinf err")
 		}
-		s.master = false
+		p.master = false
 		s.segment = inf
 		s.segmentTag = true
 	case strings.HasPrefix(line, ExtMedia):
@@ -178,7 +178,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		line = strings.Trim(line, "\n")
 		uri := strings.TrimSpace(line)
 		if s.segment != nil && s.segmentTag {
-			if s.master {
+			if p.master {
 				v, has := s.segment.(*VariantSegment)
 				if !has {
 					return errors.New("invalid variant playlist")
@@ -193,8 +193,10 @@ func decodeLine(p *Playlist, line string, s *States) error {
 				i.URI = uri
 				p.AppendSegment(i)
 			}
+			s.segmentTag = false
+
 			return nil
 		}
 	}
-	return fmt.Errorf("%s is invalid line\n", line)
+	return nil
 }

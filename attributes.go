@@ -232,7 +232,6 @@ type Playlist struct {
 // state of m3u and temporary store segments, stream inf...etc
 type States struct {
 	m3u8       bool
-	master     bool
 	segmentTag bool
 	listtype   ListType
 	segment    PlaylistSegment
