@@ -2,7 +2,7 @@ package m3u8
 
 func NewPlaylist() *Playlist {
 	pl := new(Playlist)
-	pl.version = uint8(3)
+	pl.Version = uint8(3)
 	pl.TargetDuration = 10
 	pl.live = true
 
