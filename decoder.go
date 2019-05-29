@@ -98,7 +98,9 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		if err != nil {
 			return errors.Wrap(err, "new byte range err")
 		}
-		_ = br
+		if m, has := s.segment.(*MapSegment); has != false {
+			m.ByteRange = br
+		}
 	case strings.HasPrefix(line, ExtMap):
 		m, err := NewMap(line)
 		if err != nil {
@@ -173,6 +175,26 @@ func decodeLine(p *Playlist, line string, s *States) error {
 			return errors.Wrap(err, "invalid scan version")
 		}
 	default:
+		line = strings.Trim(line, "\n")
+		uri := strings.TrimSpace(line)
+		if s.segment != nil && s.segmentTag {
+			if s.master {
+				v, has := s.segment.(*VariantSegment)
+				if !has {
+					return errors.New("invalid variant playlist")
+				}
+				v.URI = uri
+				p.AppendSegment(v)
+			} else {
+				i, has := s.segment.(*InfSegment)
+				if !has {
+					return errors.New("invalid EXTINF segment")
+				}
+				i.URI = uri
+				p.AppendSegment(i)
+			}
+			return nil
+		}
 	}
-	return nil
+	return fmt.Errorf("%s is invalid line\n", line)
 }
