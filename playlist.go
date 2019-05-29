@@ -9,6 +9,10 @@ func NewPlaylist() *Playlist {
 	return pl
 }
 
+func (p *Playlist) Master() bool {
+	return p.master
+}
+
 // TODO display playlist contents
 func (p *Playlist) String() string {
 	if p.master {

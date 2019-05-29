@@ -214,7 +214,7 @@ type StartSegment struct {
 }
 
 type Playlist struct {
-	version               uint8
+	Version               uint8
 	PlaylistType          string
 	AllowCache            bool
 	MediaSequence         uint64
