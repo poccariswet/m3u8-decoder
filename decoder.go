@@ -72,7 +72,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		if err != nil {
 			return errors.Wrap(err, "new media err")
 		}
-		p.Segments = append(p.Segments, m)
+		p.AppendSegment(m)
 	case strings.HasPrefix(line, ExtStreamInf):
 		p.master = true
 		s.segmentTag = true
@@ -92,7 +92,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		}
 		v.IFrame = true
 		s.segment = v
-		p.Segments = append(p.Segments, v)
+		p.AppendSegment(v)
 	case strings.HasPrefix(line, ExtByteRange):
 		br, err := NewByteRange(line)
 		if err != nil {
@@ -104,25 +104,25 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		if err != nil {
 			return errors.Wrap(err, "new map err")
 		}
-		p.Segments = append(p.Segments, m)
+		p.AppendSegment(m)
 	case strings.HasPrefix(line, ExtKey):
 		key, err := NewKey(line)
 		if err != nil {
 			return errors.Wrap(err, "new key err")
 		}
-		p.Segments = append(p.Segments, key)
+		p.AppendSegment(key)
 	case strings.HasPrefix(line, ExtProgramDateTime):
 		dt, err := NewProgramDateTime(line)
 		if err != nil {
 			return errors.Wrap(err, "new program date time err")
 		}
-		p.Segments = append(p.Segments, dt)
+		p.AppendSegment(dt)
 	case strings.HasPrefix(line, ExtDateRange):
 		dr, err := NewDateRange(line)
 		if err != nil {
 			return errors.Wrap(err, "new date range err")
 		}
-		p.Segments = append(p.Segments, dr)
+		p.AppendSegment(dr)
 
 		/* session tags */
 	case strings.HasPrefix(line, ExtSessionKey):
@@ -130,20 +130,20 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		if err != nil {
 			return errors.Wrap(err, "new session key err")
 		}
-		p.Segments = append(p.Segments, sk)
+		p.AppendSegment(sk)
 	case strings.HasPrefix(line, ExtSessionData):
 		sd, err := NewSessionData(line)
 		if err != nil {
 			return errors.Wrap(err, "new session data err")
 		}
-		p.Segments = append(p.Segments, sd)
+		p.AppendSegment(sd)
 
 	case strings.HasPrefix(line, ExtStart):
 		start, err := NewStart(line)
 		if err != nil {
 			return errors.Wrap(err, "new start err")
 		}
-		p.Segments = append(p.Segments, start)
+		p.AppendSegment(start)
 	case strings.HasPrefix(line, ExtIndependentSegments):
 		p.IndependentSegments = true
 
