@@ -21,7 +21,7 @@ func main() {
 
   playlist, err = m3u8.DecodeFrom(bufio.NewReader(master))
   if err != nil {
-  fmt.Fprintln(os.Stderr, err)
+    fmt.Fprintln(os.Stderr, err)
     os.Exit(1)
   }
 
