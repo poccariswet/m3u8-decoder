@@ -60,3 +60,30 @@ func TestDecodeMaster(t *testing.T) {
 	assert.Equal(t, uint32(1500000), v.Bandwidth)
 	assert.Equal(t, "chunklist-b1500000.m3u8", v.URI)
 }
+
+func TestDecodeMedia(t *testing.T) {
+	media, err := os.Open("./example/playlist/media.m3u8")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	p, err := m3u8.DecodeFrom(bufio.NewReader(media))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.False(t, p.Master())
+	assert.Equal(t, float64(10), p.TargetDuration)
+
+	v := p.Segments[0].(*m3u8.InfSegment)
+	assert.Equal(t, float64(9.009), v.Duration)
+	assert.Equal(t, "http://media.example.com/first.ts", v.URI)
+
+	v = p.Segments[1].(*m3u8.InfSegment)
+	assert.Equal(t, float64(9.009), v.Duration)
+	assert.Equal(t, "http://media.example.com/second.ts", v.URI)
+
+	v = p.Segments[2].(*m3u8.InfSegment)
+	assert.Equal(t, float64(3.003), v.Duration)
+	assert.Equal(t, "http://media.example.com/third.ts", v.URI)
+}
