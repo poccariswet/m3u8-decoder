@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"strings"
 
 	"github.com/pkg/errors"
 )
 
+// decode parses a playlist
 func decode(buf *bytes.Buffer) (*Playlist, error) {
 	playlist := NewPlaylist()
 	var end bool
@@ -35,6 +37,7 @@ func decode(buf *bytes.Buffer) (*Playlist, error) {
 	return playlist, nil
 }
 
+// DecodeFrom read a playlist passed from the io.Reader
 func DecodeFrom(r io.Reader) (*Playlist, error) {
 	buf := new(bytes.Buffer)
 	_, err := buf.ReadFrom(r)
@@ -44,6 +47,17 @@ func DecodeFrom(r io.Reader) (*Playlist, error) {
 	return decode(buf)
 }
 
+// ReadFile reads contents from filepath and return Playlist
+func ReadFile(path string) (*Playlist, error) {
+	file, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, errors.Wrap(err, "ReadFile err")
+	}
+
+	return decode(bytes.NewBuffer(file))
+}
+
+// decodeLine decodes a line of playlist and parses
 func decodeLine(p *Playlist, line string, s *States) error {
 	if !s.m3u8 && line != EXTM3U {
 		return errors.New("invalid playlist, not exist #EXTM3U")
