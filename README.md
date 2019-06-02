@@ -19,7 +19,7 @@ func main() {
     os.Exit(1)
   }
 
-  playlist, err = m3u8.DecodeFrom(bufio.NewReader(master))
+  playlist, err = m3u8.DecodeFrom(bufio.NewReader(master)) // or ReadFile
   if err != nil {
     fmt.Fprintln(os.Stderr, err)
     os.Exit(1)
