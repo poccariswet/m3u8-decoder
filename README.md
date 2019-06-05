@@ -1,5 +1,7 @@
 # m3u8-decorder
 
+[![CircleCI](https://circleci.com/gh/poccariswet/m3u8-decoder/tree/master.svg?style=svg)](https://circleci.com/gh/poccariswet/m3u8-decoder/tree/master)
+
 `m3u8-decoder` is a Go library base of rfc8216
 
 ## Installation
