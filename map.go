@@ -1,6 +1,9 @@
 package m3u8
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/pkg/errors"
 )
 
@@ -26,5 +29,12 @@ func NewMap(line string) (*MapSegment, error) {
 }
 
 func (ms *MapSegment) String() string {
-	return "MapSegment"
+	var s []string
+
+	s = append(s, fmt.Sprintf(`%s="%s"`, URI, ms.URI))
+
+	if ms.ByteRange != nil {
+		s = append(s, fmt.Sprintf(`%s="%s"`, ByteRange, ms.ByteRange.String()))
+	}
+	return fmt.Sprintf("%s:%s", ExtMap, strings.Join(s, ","))
 }

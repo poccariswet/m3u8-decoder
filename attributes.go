@@ -160,14 +160,16 @@ type DateRangeSegment struct {
 }
 
 type ByteRangeSegment struct {
-	Length int64 // the length of the sub-range in bytes
-	Offset int64 // a byte offset from the beginning of the resource
+	Length  int64 // the length of the sub-range in bytes
+	Offset  int64 // a byte offset from the beginning of the resource
+	Extflag bool  // whether EXT-BYTERANGE or BYTERANGE
 }
 
 // #EXTINF attribute and, under uri
 type InfSegment struct {
-	Duration float64
-	URI      string
+	Duration  float64
+	URI       string
+	ByteRange *ByteRangeSegment
 }
 
 // #EXT-X-STREAM-INF or EXT-X-I-FRAME-STREAM-INF attributes
@@ -180,7 +182,7 @@ type VariantSegment struct {
 	Subtitle         string
 	AverageBandwidth uint32
 	ProgramID        uint32
-	Codec            string
+	Codecs           string
 	AudioCodec       string
 	Audio            string
 	Video            string
@@ -226,7 +228,8 @@ type Playlist struct {
 	live                  bool
 	Discontinty           bool // EXT-X-DISCONTINUITY encoding discontinuity between the media segment that follows it and the one that preceded it.
 
-	Segments []PlaylistSegment
+	Segments   []PlaylistSegment
+	hasVersion bool
 }
 
 // state of m3u and temporary store segments, stream inf...etc

@@ -24,4 +24,5 @@ func TestDateTime(t *testing.T) {
 	}
 
 	assert.Equal(t, expected, dt.Time)
+	assert.Equal(t, line, dt.String())
 }

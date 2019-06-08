@@ -1,5 +1,10 @@
 package m3u8
 
+import (
+	"fmt"
+	"strings"
+)
+
 func NewSessionData(line string) (*SessionDataSegment, error) {
 	/*
 		type SessionDataSegment struct {
@@ -21,7 +26,22 @@ func NewSessionData(line string) (*SessionDataSegment, error) {
 }
 
 func (ss *SessionDataSegment) String() string {
-	return "SessionDataSegment"
+	var s []string
+
+	s = append(s, fmt.Sprintf(`%s="%s"`, DATAID, ss.DataID))
+
+	if ss.Language != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, LANGUAGE, ss.Language))
+	}
+
+	if ss.Value != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, VALUE, ss.Value))
+	}
+
+	if ss.URI != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, URI, ss.URI))
+	}
+	return fmt.Sprintf("%s:%s", ExtSessionData, strings.Join(s, ","))
 }
 
 func NewSessionKey(line string) (*SessionKeySegment, error) {
@@ -48,5 +68,25 @@ func NewSessionKey(line string) (*SessionKeySegment, error) {
 }
 
 func (ss *SessionKeySegment) String() string {
-	return "SessionKeySegment"
+	var s []string
+
+	s = append(s, fmt.Sprintf("%s=%s", METHOD, ss.Method))
+
+	if ss.IV != "" {
+		s = append(s, fmt.Sprintf("%s=%s", IV, ss.IV))
+	}
+
+	if ss.KeyFormat != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, KEYFORMAT, ss.KeyFormat))
+	}
+
+	if ss.KeyFormatVersions != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, KEYFORMATVERSIONS, ss.KeyFormatVersions))
+	}
+
+	if ss.URI != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, URI, ss.URI))
+	}
+
+	return fmt.Sprintf("%s:%s", ExtSessionKey, strings.Join(s, ","))
 }

@@ -1,6 +1,9 @@
 package m3u8
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/pkg/errors"
 )
 
@@ -17,7 +20,7 @@ func NewVariant(line string) (*VariantSegment, error) {
 			Subtitle         string
 			AverageBandwidth uint32
 			ProgramID        uint32
-			Codec            string
+			Codecs           string
 			AudioCodec       string
 			Audio            string
 			Video            string
@@ -60,7 +63,7 @@ func NewVariant(line string) (*VariantSegment, error) {
 		Subtitle:         item[SUBTITLES],
 		AverageBandwidth: uint32(averageBandwidth),
 		ProgramID:        uint32(programID),
-		Codec:            item[CODECS],
+		Codecs:           item[CODECS],
 		Audio:            item[AUDIO],
 		Video:            item[VIDEO],
 		FrameRate:        frameRate,
@@ -70,6 +73,63 @@ func NewVariant(line string) (*VariantSegment, error) {
 	}, nil
 }
 
-func (va *VariantSegment) String() string {
-	return "VariantSegment"
+func (vs *VariantSegment) String() string {
+	var s []string
+
+	if vs.AverageBandwidth != 0 {
+		s = append(s, fmt.Sprintf("%s=%d", AVERAGEBANDWIDTH, vs.AverageBandwidth))
+	}
+
+	if vs.Bandwidth != 0 {
+		s = append(s, fmt.Sprintf("%s=%d", BANDWIDTH, vs.Bandwidth))
+	}
+
+	if vs.Audio != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, AUDIO, vs.Audio))
+	}
+
+	if vs.Video != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, VIDEO, vs.Video))
+	}
+
+	if vs.Codecs != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, CODECS, vs.Codecs))
+	}
+
+	if vs.Resolution != nil {
+		s = append(s, vs.Resolution.String())
+	}
+
+	if vs.FrameRate != 0 {
+		s = append(s, fmt.Sprintf("%s=%v", FRAMERATE, vs.FrameRate))
+	}
+
+	if vs.ClosedCaptions != "" {
+		s = append(s, fmt.Sprintf("%s=%s", CLOSEDCAPTIONS, vs.ClosedCaptions))
+	}
+
+	if vs.ProgramID != 0 {
+		s = append(s, fmt.Sprintf("%s=%d", PROGRAMID, vs.ProgramID))
+	}
+
+	if vs.Name != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, NAME, vs.Name))
+	}
+
+	if vs.HDCPLevel != "" {
+		s = append(s, fmt.Sprintf("%s=%s", HDCPLEVEL, vs.HDCPLevel))
+	}
+
+	if vs.Subtitle != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, SUBTITLES, vs.Subtitle))
+	}
+
+	if vs.IFrame {
+		if vs.URI != "" {
+			s = append(s, fmt.Sprintf(`%s="%s"`, URI, vs.URI))
+		}
+
+		return fmt.Sprintf("%s:%s", ExtFrameStreamInf, strings.Join(s, ","))
+	}
+	return fmt.Sprintf("%s:%s\n%s", ExtStreamInf, strings.Join(s, ","), vs.URI)
 }

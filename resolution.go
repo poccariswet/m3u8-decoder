@@ -1,6 +1,7 @@
 package m3u8
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -41,5 +42,5 @@ func NewResolution(item map[string]string, param string) (*Resolution, error) {
 }
 
 func (r *Resolution) String() string {
-	return "RESOLUTION"
+	return fmt.Sprintf("%s=%dx%d", RESOLUTION, r.Width, r.Height)
 }

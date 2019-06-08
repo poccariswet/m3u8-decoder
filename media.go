@@ -1,6 +1,11 @@
 package m3u8
 
-import "github.com/pkg/errors"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/pkg/errors"
+)
 
 // NewMedia parse line has #EXT-X-MEDIA
 func NewMedia(line string) (*MediaSegment, error) {
@@ -54,5 +59,53 @@ func NewMedia(line string) (*MediaSegment, error) {
 }
 
 func (ms *MediaSegment) String() string {
-	return "MediaSegment"
+	var s []string
+
+	s = append(s, fmt.Sprintf("%s=%s", TYPE, ms.Type))
+
+	if ms.GroupID != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, GROUPID, ms.GroupID))
+	}
+
+	if ms.Language != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, LANGUAGE, ms.Language))
+	}
+
+	if ms.AssocLanguage != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, ASSOCLANGUAGE, ms.AssocLanguage))
+	}
+
+	if ms.Name != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, NAME, ms.Name))
+	}
+
+	if ms.Autoselect {
+		s = append(s, fmt.Sprintf("%s=YES", AUTOSELECT))
+	}
+
+	if ms.Forced {
+		s = append(s, fmt.Sprintf("%s=YES", FORCED))
+	}
+
+	if ms.Default {
+		s = append(s, fmt.Sprintf("%s=YES", DEFAULT))
+	}
+
+	if ms.URI != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, URI, ms.URI))
+	}
+
+	if ms.InstreamID != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, INSTREAMID, ms.InstreamID))
+	}
+
+	if ms.Characteristics != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, CHARACTERISTICS, ms.Characteristics))
+	}
+
+	if ms.Channels != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, CHANNELS, ms.Channels))
+	}
+
+	return fmt.Sprintf("%s:%s", ExtMedia, strings.Join(s, ","))
 }

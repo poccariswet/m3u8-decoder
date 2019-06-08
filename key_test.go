@@ -1,6 +1,7 @@
 package m3u8_test
 
 import (
+	"strings"
 	"testing"
 
 	m3u8 "github.com/poccariswet/m3u8-decoder"
@@ -8,8 +9,8 @@ import (
 )
 
 func TestKey(t *testing.T) {
-	line := `#EXT-X-KEY:METHOD=AES-256,URI="http://example.com/keyfile",
-IV=00000000000,KEYFORMAT="identity,KEYFORMATVERSIONS="1/2/5"`
+	line := `#EXT-X-KEY:METHOD=AES-256,IV=00000000000,URI="http://example.com/keyfile",
+KEYFORMAT="identity",KEYFORMATVERSIONS="1/2/5"`
 
 	key, err := m3u8.NewKey(line)
 	if err != nil {
@@ -22,4 +23,5 @@ IV=00000000000,KEYFORMAT="identity,KEYFORMATVERSIONS="1/2/5"`
 	assert.Equal(t, "http://example.com/keyfile", key.URI)
 	assert.Equal(t, "identity", key.KeyFormat)
 	assert.Equal(t, "1/2/5", key.KeyFormatVersions)
+	assert.Equal(t, strings.Replace(line, "\n", "", 1), key.String())
 }

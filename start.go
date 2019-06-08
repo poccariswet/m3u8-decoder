@@ -1,6 +1,11 @@
 package m3u8
 
-import "github.com/pkg/errors"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/pkg/errors"
+)
 
 func NewStart(line string) (*StartSegment, error) {
 	/*
@@ -29,5 +34,13 @@ func NewStart(line string) (*StartSegment, error) {
 }
 
 func (ss *StartSegment) String() string {
-	return "StartSegment"
+	var s []string
+
+	s = append(s, fmt.Sprintf("%s=%v", TIMEOFFSET, ss.TimeOffset))
+
+	if ss.Precise {
+		s = append(s, fmt.Sprintf("%s=YES", PRECISE))
+	}
+
+	return fmt.Sprintf("%s:%s", ExtStart, strings.Join(s, ","))
 }

@@ -17,4 +17,5 @@ func TestStart(t *testing.T) {
 
 	assert.Equal(t, float64(25), start.TimeOffset)
 	assert.True(t, start.Precise)
+	assert.Equal(t, line, start.String())
 }

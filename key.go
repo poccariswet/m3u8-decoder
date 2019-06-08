@@ -1,5 +1,10 @@
 package m3u8
 
+import (
+	"fmt"
+	"strings"
+)
+
 func NewKey(line string) (*KeySegment, error) {
 	/*
 		type KeySegment struct {
@@ -23,5 +28,25 @@ func NewKey(line string) (*KeySegment, error) {
 }
 
 func (ks *KeySegment) String() string {
-	return "KeySegment"
+	var s []string
+
+	s = append(s, fmt.Sprintf("%s=%s", METHOD, ks.Method))
+
+	if ks.IV != "" {
+		s = append(s, fmt.Sprintf("%s=%s", IV, ks.IV))
+	}
+
+	if ks.URI != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, URI, ks.URI))
+	}
+
+	if ks.KeyFormat != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, KEYFORMAT, ks.KeyFormat))
+	}
+
+	if ks.KeyFormatVersions != "" {
+		s = append(s, fmt.Sprintf(`%s="%s"`, KEYFORMATVERSIONS, ks.KeyFormatVersions))
+
+	}
+	return fmt.Sprintf("%s:%s", ExtKey, strings.Join(s, ","))
 }

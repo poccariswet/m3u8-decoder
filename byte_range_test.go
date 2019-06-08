@@ -18,6 +18,7 @@ func TestByteRange(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, int64(139684), br.Length)
 	assert.Equal(t, int64(138744), br.Offset)
+	assert.Equal(t, line[len(m3u8.ExtByteRange+":"):], br.String())
 
 	line = `#EXT-X-BYTERANGE:139684@1387a44`
 	br, err = m3u8.NewByteRange(line)
@@ -26,4 +27,5 @@ func TestByteRange(t *testing.T) {
 	line = `#EXT-X-BYTERANGE:139684=138744`
 	br, err = m3u8.NewByteRange(line)
 	assert.Error(t, err, "ByteRange value is invalid")
+
 }

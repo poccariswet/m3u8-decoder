@@ -1,6 +1,11 @@
 package m3u8
 
-import "github.com/pkg/errors"
+import (
+	"fmt"
+	"time"
+
+	"github.com/pkg/errors"
+)
 
 func NewProgramDateTime(line string) (*DateTimeSegment, error) {
 	/*
@@ -22,5 +27,10 @@ func NewProgramDateTime(line string) (*DateTimeSegment, error) {
 }
 
 func (ds *DateTimeSegment) String() string {
-	return "DateTimeSegment"
+	var s string
+	if !ds.Time.IsZero() {
+		s = fmt.Sprintf("%s:%s", ExtProgramDateTime, ds.Time.Format(time.RFC3339Nano))
+	}
+
+	return s
 }

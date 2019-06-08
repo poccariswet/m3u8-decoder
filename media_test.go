@@ -1,6 +1,7 @@
 package m3u8_test
 
 import (
+	"strings"
 	"testing"
 
 	m3u8 "github.com/poccariswet/m3u8-decoder"
@@ -9,8 +10,8 @@ import (
 
 func TestMedia(t *testing.T) {
 	line := `#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio",LANGUAGE="eng",
-ASSOC-LANGUAGE="spoken",NAME="English",AUTOSELECT=YES, FORCED=YES,
-DEFAULT=YES, URI="eng/prog_index.m3u8", INSTREAM-ID="SERVICE3",
+ASSOC-LANGUAGE="spoken",NAME="English",AUTOSELECT=YES,FORCED=YES,
+DEFAULT=YES,URI="eng/prog_index.m3u8",INSTREAM-ID="SERVICE3",
 CHARACTERISTICS="public.accessibility.transcribes-spoken-dialog",
 CHANNELS="10"`
 
@@ -32,4 +33,5 @@ CHANNELS="10"`
 	assert.Equal(t, "SERVICE3", media.InstreamID)
 	assert.Equal(t, "public.accessibility.transcribes-spoken-dialog", media.Characteristics)
 	assert.Equal(t, "10", media.Channels)
+	assert.Equal(t, strings.Replace(line, "\n", "", 4), media.String())
 }

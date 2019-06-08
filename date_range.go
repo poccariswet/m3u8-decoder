@@ -1,6 +1,8 @@
 package m3u8
 
 import (
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/pkg/errors"
@@ -21,7 +23,6 @@ func NewDateRange(line string) (*DateRangeSegment, error) {
 			EndOnNext       bool
 		}
 	*/
-
 	item := parseLine(line[len(ExtByteRange+":"):])
 
 	duration, err := extractFloat64(item, DURATION)
@@ -72,5 +73,45 @@ func NewDateRange(line string) (*DateRangeSegment, error) {
 }
 
 func (ds *DateRangeSegment) String() string {
-	return "DateRangeSegment"
+	var s []string
+
+	s = append(s, fmt.Sprintf("%s=%s", ID, ds.ID))
+
+	if ds.Class != "" {
+		s = append(s, fmt.Sprintf("%s=%s", CLASS, ds.Class))
+	}
+
+	if !ds.StartDate.IsZero() {
+		s = append(s, fmt.Sprintf("%s=%s", STARTDATE, ds.StartDate.Format(time.RFC3339Nano)))
+	}
+
+	if !ds.StartDate.IsZero() {
+		s = append(s, fmt.Sprintf("%s=%s", ENDDATE, ds.EndDate.Format(time.RFC3339Nano)))
+	}
+
+	if ds.Duration != 0 {
+		s = append(s, fmt.Sprintf("%s=%v", DURATION, ds.Duration))
+	}
+
+	if ds.PlannedDuration != 0 {
+		s = append(s, fmt.Sprintf("%s=%v", PLANNEDDURATION, ds.PlannedDuration))
+	}
+
+	if ds.Scte35Cmd != "" {
+		s = append(s, fmt.Sprintf("%s=%s", SCTE35CMD, ds.Scte35Cmd))
+	}
+
+	if ds.Scte35Out != "" {
+		s = append(s, fmt.Sprintf("%s=%s", SCTE35OUT, ds.Scte35Out))
+	}
+
+	if ds.Scte35In != "" {
+		s = append(s, fmt.Sprintf("%s=%s", SCTE35IN, ds.Scte35In))
+	}
+
+	if ds.EndOnNext {
+		s = append(s, fmt.Sprintf("%s=YES", ENDONNEXT))
+	}
+
+	return fmt.Sprintf("%s:%s", ExtDateRange, strings.Join(s, ","))
 }

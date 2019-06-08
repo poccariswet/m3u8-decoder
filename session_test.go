@@ -8,7 +8,7 @@ import (
 )
 
 func TestSessionDate(t *testing.T) {
-	line := `#EXT-X-SESSION-DATA:DATA-ID="com.example.title",LANGUAGE="es",VALUE="Este es un ejemplo", URI="http://sample.com"`
+	line := `#EXT-X-SESSION-DATA:DATA-ID="com.example.title",LANGUAGE="es",VALUE="Este es un ejemplo",URI="http://sample.com"`
 
 	sd, err := m3u8.NewSessionData(line)
 	if err != nil {
@@ -20,11 +20,11 @@ func TestSessionDate(t *testing.T) {
 	assert.Equal(t, "Este es un ejemplo", sd.Value)
 	assert.Equal(t, "http://sample.com", sd.URI)
 	assert.Equal(t, "es", sd.Language)
+	assert.Equal(t, line, sd.String())
 }
 
 func TestSessionKey(t *testing.T) {
-	line := `#EXT-X-SESSION-KEY:METHOD=AES-256,URI="http://example.com/keyfile",
-IV=FFFFFF0,KEYFORMAT="identity,KEYFORMATVERSIONS="1/2/5"`
+	line := `#EXT-X-SESSION-KEY:METHOD=AES-256,IV=FFFFFF0,KEYFORMAT="identity",KEYFORMATVERSIONS="1/2/5",URI="http://example.com/keyfile"`
 
 	sk, err := m3u8.NewSessionKey(line)
 	if err != nil {
@@ -37,4 +37,5 @@ IV=FFFFFF0,KEYFORMAT="identity,KEYFORMATVERSIONS="1/2/5"`
 	assert.Equal(t, "http://example.com/keyfile", sk.URI)
 	assert.Equal(t, "identity", sk.KeyFormat)
 	assert.Equal(t, "1/2/5", sk.KeyFormatVersions)
+	assert.Equal(t, line, sk.String())
 }

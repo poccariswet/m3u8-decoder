@@ -17,6 +17,7 @@ func TestMap(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, "main.mp4", m.URI)
 	assert.NotNil(t, m.ByteRange)
+	assert.Equal(t, line, m.String())
 
 	line = `#EXT-X-MAP:URI="main.mp4"`
 	m, err = m3u8.NewMap(line)
@@ -27,4 +28,5 @@ func TestMap(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, "main.mp4", m.URI)
 	assert.Nil(t, m.ByteRange)
+	assert.Equal(t, line, m.String())
 }

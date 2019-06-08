@@ -1,7 +1,6 @@
 package m3u8_test
 
 import (
-	"log"
 	"testing"
 
 	m3u8 "github.com/poccariswet/m3u8-decoder"
@@ -9,8 +8,6 @@ import (
 )
 
 func TestParseResolution(t *testing.T) {
-	log.Println("success test")
-
 	line := map[string]string{
 		"RESOLUTION": "416x234",
 	}
@@ -22,8 +19,6 @@ func TestParseResolution(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, uint16(416), r.Width)
 	assert.Equal(t, uint16(234), r.Height)
-
-	log.Println("failed test")
 
 	line = map[string]string{
 		"RESOLUTION": "41ax234",
