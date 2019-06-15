@@ -1,6 +1,7 @@
 package m3u8
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -16,12 +17,19 @@ func parseLine(line string) map[string]string {
 	m := map[string]string{}
 	lines := strings.Split(line, ",")
 
+	// if val has multiple items value, map's tmp key put in the value
+	var tmp string
 	for _, v := range lines {
 		v = strings.Trim(v, "\n")
 		v = strings.TrimSpace(v)
-		s := strings.Split(v, "=")
-
-		m[s[0]] = strings.Trim(s[1], `"`)
+		val := strings.Split(v, "=")
+		if len(val) != 2 {
+			str := m[tmp]
+			m[tmp] = fmt.Sprintf("%s,%s", str, strings.Trim(val[0], `"`))
+		} else {
+			tmp = val[0]
+			m[val[0]] = strings.Trim(val[1], `"`)
+		}
 	}
 
 	return m
