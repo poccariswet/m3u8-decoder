@@ -159,20 +159,21 @@ type DateRangeSegment struct {
 	EndOnNext       bool
 }
 
+// EXT-X-BYTERANGE or BYTERANGE segment
 type ByteRangeSegment struct {
 	Length  int64 // the length of the sub-range in bytes
 	Offset  int64 // a byte offset from the beginning of the resource
 	Extflag bool  // whether EXT-BYTERANGE or BYTERANGE
 }
 
-// #EXTINF attribute and, under uri
+// EXTINF segment and, under uri
 type InfSegment struct {
 	Duration  float64
 	URI       string
 	ByteRange *ByteRangeSegment
 }
 
-// #EXT-X-STREAM-INF or EXT-X-I-FRAME-STREAM-INF attributes
+// EXT-X-STREAM-INF or EXT-X-I-FRAME-STREAM-INF segment
 type VariantSegment struct {
 	IFrame bool
 
@@ -192,7 +193,7 @@ type VariantSegment struct {
 	Resolution       *Resolution
 }
 
-// EXT-X-SESSION-DATA attributes
+// EXT-X-SESSION-DATA segment
 type SessionDataSegment struct {
 	DataID   string
 	Value    string
@@ -200,7 +201,7 @@ type SessionDataSegment struct {
 	Language string
 }
 
-// EXT-X-SESSION-KEY attributes
+// EXT-X-SESSION-KEY segment
 type SessionKeySegment struct {
 	Method            string
 	IV                string // Initialization Vector
@@ -209,12 +210,13 @@ type SessionKeySegment struct {
 	KeyFormatVersions string
 }
 
-// EXT-X-START attributes
+// EXT-X-START segment
 type StartSegment struct {
 	TimeOffset float64
 	Precise    bool
 }
 
+// master and media platlist segment
 type Playlist struct {
 	Version               uint8
 	PlaylistType          string
