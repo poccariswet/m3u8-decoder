@@ -13,6 +13,12 @@ const (
 	ExtIFramesOnly           = `#EXT-X-I-FRAMES-ONLY`
 	ExtMediaSequence         = `#EXT-X-MEDIA-SEQUENCE`
 	ExtVersion               = `#EXT-X-VERSION`
+	ExtServerControl         = `#EXT-X-SERVER-CONTROL`
+
+	// server control
+	CANBLOCKRELOAD = "CAN-BLOCK-RELOAD"
+	PARTHOLDBACK   = "PART-HOLD-BACK"
+	CANSKIPUNTIL   = "CAN-SKIP-UNTIL"
 
 	// Utility tag
 	URI = "URI"
