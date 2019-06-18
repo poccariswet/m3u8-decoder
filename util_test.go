@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	m3u8 "github.com/poccariswet/m3u8-decoder"
+	"github.com/stretchr/testify/assert"
 )
 
 func parseLine(line string) map[string]string {
@@ -34,5 +35,9 @@ func TestUtil(t *testing.T) {
 	line := `#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=195023,CODECS="avc1.42e00a,mp4a.40.2",AUDIO="audio"`
 
 	values := parseLine(line[len(m3u8.ExtStreamInf+":"):])
-	fmt.Println(values)
+
+	assert.Equal(t, "1", values["PROGRAM-ID"])
+	assert.Equal(t, "195023", values["BANDWIDTH"])
+	assert.Equal(t, "avc1.42e00a,mp4a.40.2", values["CODECS"])
+	assert.Equal(t, "audio", values["AUDIO"])
 }
