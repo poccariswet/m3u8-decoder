@@ -1,6 +1,11 @@
 package m3u8
 
-import "github.com/pkg/errors"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/pkg/errors"
+)
 
 // ServerControl indicate support for features such as Blocking Playlist Reload and Playlist Delta Updates
 type ServerControlSegment struct {
@@ -44,5 +49,21 @@ func NewServerControl(line string) (*ServerControlSegment, error) {
 
 // segment to string
 func (ss *ServerControlSegment) String() string {
-	return "ServerControlSegment"
+	var s []string
+
+	s = append(s, fmt.Sprintf("%s=YES", CANBLOCKRELOAD))
+
+	if ss.PartHoldBack != 0 {
+		s = append(s, fmt.Sprintf("%s=%v", PARTHOLDBACK, ss.PartHoldBack))
+	}
+
+	if ss.CanSkipUntil != 0 {
+		s = append(s, fmt.Sprintf("%s=%v", CANSKIPUNTIL, ss.CanSkipUntil))
+	}
+
+	if ss.HoldBack != 0 {
+		s = append(s, fmt.Sprintf("%s=%v", HOLDBACK, ss.HoldBack))
+	}
+
+	return fmt.Sprintf("%s:%s", ExtServerControl, strings.Join(s, ","))
 }
