@@ -30,9 +30,14 @@ const (
 	ExtFrameStreamInf  = `#EXT-X-I-FRAME-STREAM-INF`
 
 	// for low-latency
-	ExtServerControl = `#EXT-X-SERVER-CONTROL`
-	ExtPartInf       = `#EXT-X-PART-INF`
-	ExtPart          = `#EXT-X-PART`
+	ExtServerControl   = `#EXT-X-SERVER-CONTROL`
+	ExtPartInf         = `#EXT-X-PART-INF`
+	ExtPart            = `#EXT-X-PART`
+	ExtRenditionReport = `#EXT-X-RENDITION-REPORT`
+
+	// rendition report
+	LASTMSN  = "LAST-MSN"
+	LASTPART = "LAST-PART"
 
 	// server control
 	CANBLOCKRELOAD = "CAN-BLOCK-RELOAD"
