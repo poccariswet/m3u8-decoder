@@ -14,7 +14,6 @@ func TestMap(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	assert.Nil(t, err)
 	assert.Equal(t, "main.mp4", m.URI)
 	assert.NotNil(t, m.ByteRange)
 	assert.Equal(t, line, m.String())
@@ -25,7 +24,6 @@ func TestMap(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	assert.Nil(t, err)
 	assert.Equal(t, "main.mp4", m.URI)
 	assert.Nil(t, m.ByteRange)
 	assert.Equal(t, line, m.String())

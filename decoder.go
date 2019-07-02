@@ -147,7 +147,39 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		}
 		p.AppendSegment(dr)
 
-		/* session tags */
+	/* low-latency tags */
+	case strings.HasPrefix(line, ExtServerControl):
+		sc, err := NewServerControl(line)
+		if err != nil {
+			return errors.Wrap(err, "new server control err")
+		}
+		p.AppendSegment(sc)
+	case strings.HasPrefix(line, ExtPartInf):
+		pi, err := NewPartInf(line)
+		if err != nil {
+			return errors.Wrap(err, "new part inf err")
+		}
+		p.AppendSegment(pi)
+	case strings.HasPrefix(line, ExtRenditionReport):
+		report, err := NewReport(line)
+		if err != nil {
+			return errors.Wrap(err, "new rendition report err")
+		}
+		p.AppendSegment(report)
+	case strings.HasPrefix(line, ExtSkip):
+		skip, err := NewSkip(line)
+		if err != nil {
+			return errors.Wrap(err, "new skip err")
+		}
+		p.AppendSegment(skip)
+	case strings.HasPrefix(line, ExtPart):
+		part, err := NewPart(line)
+		if err != nil {
+			return errors.Wrap(err, "new part err")
+		}
+		p.AppendSegment(part)
+
+	/* session tags */
 	case strings.HasPrefix(line, ExtSessionKey):
 		sk, err := NewSessionKey(line)
 		if err != nil {

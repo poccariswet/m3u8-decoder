@@ -17,7 +17,6 @@ KEYFORMAT="identity",KEYFORMATVERSIONS="1/2/5"`
 		t.Fatal(err)
 	}
 
-	assert.Nil(t, err)
 	assert.Equal(t, "AES-256", key.Method)
 	assert.Equal(t, "00000000000", key.IV)
 	assert.Equal(t, "http://example.com/keyfile", key.URI)

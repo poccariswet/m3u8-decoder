@@ -15,7 +15,6 @@ func TestSessionDate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	assert.Nil(t, err)
 	assert.Equal(t, "com.example.title", sd.DataID)
 	assert.Equal(t, "Este es un ejemplo", sd.Value)
 	assert.Equal(t, "http://sample.com", sd.URI)
@@ -31,7 +30,6 @@ func TestSessionKey(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	assert.Nil(t, err)
 	assert.Equal(t, "AES-256", sk.Method)
 	assert.Equal(t, "FFFFFF0", sk.IV)
 	assert.Equal(t, "http://example.com/keyfile", sk.URI)

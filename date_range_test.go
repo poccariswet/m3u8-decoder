@@ -16,7 +16,6 @@ func TestDateRange(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	assert.Nil(t, err)
 	assert.Equal(t, "splice-6FFFFFF0", dr.ID)
 	assert.Equal(t, "sample.class", dr.Class)
 	assert.Equal(t, float64(59.993), dr.Duration)

@@ -16,8 +16,6 @@ func TestDateTime(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	assert.Nil(t, err)
-
 	expected, err := time.Parse("2006-01-02T15:04:05.999999999Z07", "2017-06-09T04:59:01.797Z")
 	if err != nil {
 		t.Fatal(err)

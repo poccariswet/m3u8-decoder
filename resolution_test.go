@@ -16,7 +16,6 @@ func TestParseResolution(t *testing.T) {
 	if err != nil {
 		t.Fatalf("err is not nil: %s", err)
 	}
-	assert.Nil(t, err)
 	assert.Equal(t, uint16(416), r.Width)
 	assert.Equal(t, uint16(234), r.Height)
 
