@@ -21,7 +21,6 @@ PROGRAM-ID=1,NAME="1280p",HDCP-LEVEL=TYPE-0,SUBTITLES="sample.subs",URI="sample.
 	}
 	v.IFrame = true
 
-	assert.Nil(t, err)
 	assert.Equal(t, "sample.url", v.URI)
 	assert.Equal(t, uint32(435408), v.Bandwidth)
 	assert.Equal(t, "1280p", v.Name)

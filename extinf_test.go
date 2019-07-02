@@ -26,7 +26,6 @@ func TestExtInf(t *testing.T) {
 	inf.ByteRange = br
 	inf.URI = `1.ts`
 
-	assert.Nil(t, err)
 	assert.Equal(t, float64(9.009), inf.Duration)
 	assert.Equal(t, line, inf.String())
 }

@@ -15,7 +15,6 @@ func TestByteRange(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	assert.Nil(t, err)
 	assert.Equal(t, int64(139684), br.Length)
 	assert.Equal(t, int64(138744), br.Offset)
 	assert.Equal(t, line[len(m3u8.ExtByteRange+":"):], br.String())

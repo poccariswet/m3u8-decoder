@@ -14,38 +14,6 @@ const (
 	ExtMediaSequence         = `#EXT-X-MEDIA-SEQUENCE`
 	ExtVersion               = `#EXT-X-VERSION`
 
-	// Utility tag
-	URI = "URI"
-
-	// ByteRange
-	ByteRange = "BYTERANGE"
-
-	// Encrypt key
-	METHOD            = "METHOD"
-	IV                = "IV"
-	KEYFORMAT         = "KEYFORMAT"
-	KEYFORMATVERSIONS = "KEYFORMATVERSIONS"
-
-	// DateRange
-	ID              = "ID"
-	CLASS           = "CLASS"
-	STARTDATE       = "START-DATE"
-	ENDDATE         = "END-DATE"
-	DURATION        = "DURATION"
-	PLANNEDDURATION = "PLANNED-DURATION"
-	SCTE35CMD       = "SCTE35-CMD"
-	SCTE35OUT       = "SCTE35-OUT"
-	SCTE35IN        = "SCTE35-IN"
-	ENDONNEXT       = "END-ON-NEXT"
-
-	// Ext-Start
-	TIMEOFFSET = "TIME-OFFSET"
-	PRECISE    = "PRECISE"
-
-	// Session
-	DATAID = "DATA-ID"
-	VALUE  = "VALUE"
-
 	// Variant Playlist
 	ExtSessionKey      = `#EXT-X-SESSION-KEY`
 	ExtKey             = `#EXT-X-KEY`
@@ -60,6 +28,63 @@ const (
 	ExtMedia           = `#EXT-X-MEDIA`
 	ExtStreamInf       = `#EXT-X-STREAM-INF`
 	ExtFrameStreamInf  = `#EXT-X-I-FRAME-STREAM-INF`
+
+	// for low-latency
+	ExtServerControl   = `#EXT-X-SERVER-CONTROL`
+	ExtPartInf         = `#EXT-X-PART-INF`
+	ExtPart            = `#EXT-X-PART`
+	ExtRenditionReport = `#EXT-X-RENDITION-REPORT`
+	ExtSkip            = `#EXT-X-SKIP`
+
+	// rendition report
+	LASTMSN  = "LAST-MSN"
+	LASTPART = "LAST-PART"
+
+	// server control
+	CANBLOCKRELOAD = "CAN-BLOCK-RELOAD"
+	HOLDBACK       = "HOLD-BACK"
+	PARTHOLDBACK   = "PART-HOLD-BACK"
+	CANSKIPUNTIL   = "CAN-SKIP-UNTIL"
+
+	// part
+	PARTTARGET  = "PART-TARGET"
+	INDEPENDENT = "INDEPENDENT"
+	GAP         = "GAP"
+
+	// skip
+	SKIPPEDSEGMENTS = "SKIPPED-SEGMENTS"
+
+	// Utility tag
+	URI      = "URI"
+	DURATION = "DURATION"
+
+	// ByteRange
+	BYTERANGE = "BYTERANGE"
+
+	// Encrypt key
+	METHOD            = "METHOD"
+	IV                = "IV"
+	KEYFORMAT         = "KEYFORMAT"
+	KEYFORMATVERSIONS = "KEYFORMATVERSIONS"
+
+	// DateRange
+	ID              = "ID"
+	CLASS           = "CLASS"
+	STARTDATE       = "START-DATE"
+	ENDDATE         = "END-DATE"
+	PLANNEDDURATION = "PLANNED-DURATION"
+	SCTE35CMD       = "SCTE35-CMD"
+	SCTE35OUT       = "SCTE35-OUT"
+	SCTE35IN        = "SCTE35-IN"
+	ENDONNEXT       = "END-ON-NEXT"
+
+	// Ext-Start
+	TIMEOFFSET = "TIME-OFFSET"
+	PRECISE    = "PRECISE"
+
+	// Session
+	DATAID = "DATA-ID"
+	VALUE  = "VALUE"
 
 	// MediaType
 	TYPE            = "TYPE"

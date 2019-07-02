@@ -17,7 +17,7 @@ func NewMap(line string) (*MapSegment, error) {
 
 	item := parseLine(line[len(ExtMap+":"):])
 
-	br, err := NewByteRange(item[ByteRange])
+	br, err := NewByteRange(item[BYTERANGE])
 	if err != nil {
 		return nil, errors.Wrap(err, "new byte range")
 	}
@@ -34,7 +34,7 @@ func (ms *MapSegment) String() string {
 	s = append(s, fmt.Sprintf(`%s="%s"`, URI, ms.URI))
 
 	if ms.ByteRange != nil {
-		s = append(s, fmt.Sprintf(`%s="%s"`, ByteRange, ms.ByteRange.String()))
+		s = append(s, fmt.Sprintf(`%s="%s"`, BYTERANGE, ms.ByteRange.String()))
 	}
 	return fmt.Sprintf("%s:%s", ExtMap, strings.Join(s, ","))
 }

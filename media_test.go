@@ -20,7 +20,6 @@ CHANNELS="10"`
 		t.Fatal(err)
 	}
 
-	assert.Nil(t, err)
 	assert.Equal(t, "AUDIO", media.Type)
 	assert.Equal(t, "audio", media.GroupID)
 	assert.Equal(t, "eng", media.Language)
