@@ -34,6 +34,7 @@ const (
 	ExtPartInf         = `#EXT-X-PART-INF`
 	ExtPart            = `#EXT-X-PART`
 	ExtRenditionReport = `#EXT-X-RENDITION-REPORT`
+	ExtSkip            = `#EXT-X-SKIP`
 
 	// rendition report
 	LASTMSN  = "LAST-MSN"
@@ -49,6 +50,9 @@ const (
 	PARTTARGET  = "PART-TARGET"
 	INDEPENDENT = "INDEPENDENT"
 	GAP         = "GAP"
+
+	// skip
+	SKIPPEDSEGMENTS = "SKIPPED-SEGMENTS"
 
 	// Utility tag
 	URI      = "URI"
