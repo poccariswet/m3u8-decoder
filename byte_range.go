@@ -8,6 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// こいつは公開するべき？
 func NewByteRange(line string) (*ByteRangeSegment, error) {
 	/*
 		type ByteRangeSegment struct {

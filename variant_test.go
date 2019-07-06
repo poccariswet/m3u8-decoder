@@ -1,5 +1,5 @@
 package m3u8_test
-
+// ここだけパッケージ名を分けているのは？
 import (
 	"strings"
 	"testing"
@@ -8,6 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// testifyの内部でDeepEqualが使用されているので、あまり使わない方がいい
+// github.com/google/go-cmp/cmpとかを使う方が安全
 func TestVariant(t *testing.T) {
 	line := `#EXT-X-I-FRAME-STREAM-INF:AVERAGE-BANDWIDTH=305152,BANDWIDTH=435408,
 AUDIO="sample",VIDEO="sample",CODECS="mp4a.40.2",

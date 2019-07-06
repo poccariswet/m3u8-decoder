@@ -15,6 +15,7 @@ type Resolution struct {
 }
 
 func NewResolution(item map[string]string, param string) (*Resolution, error) {
+	//不要？
 	val, has := item[param]
 	if !has {
 		return nil, nil

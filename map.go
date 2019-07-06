@@ -15,6 +15,7 @@ func NewMap(line string) (*MapSegment, error) {
 		}
 	*/
 
+	// ここのitemという名前は、mapを意識していないので、mapを意識した名前で、ドメインに沿った名前にするべき
 	item := parseLine(line[len(ExtMap+":"):])
 
 	br, err := NewByteRange(item[ByteRange])

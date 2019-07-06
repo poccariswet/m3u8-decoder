@@ -14,6 +14,7 @@ func main() {
 		panic("$GOPATH is empty")
 	}
 
+	// run関数に分離するのが結構一般的
 	master, err := os.Open(path + "/src/github.com/poccariswet/m3u8-decoder/example/playlist/master.m3u8")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)

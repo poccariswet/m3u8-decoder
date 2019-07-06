@@ -8,6 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// 公開する必要がある？
 func NewExtInf(line string) (*InfSegment, error) {
 	/*
 		type InfSegment struct {

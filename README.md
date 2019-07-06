@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/poccariswet/m3u8-decoder/tree/master.svg?style=svg)](https://circleci.com/gh/poccariswet/m3u8-decoder/tree/master)
 
-`m3u8-decoder` is a Go library base of rfc8216
+`m3u8-decoder` is a Go library base of rfc8216  
 
 ## Installation
 
@@ -21,7 +21,7 @@ func main() {
     os.Exit(1)
   }
 
-  playlist, err = m3u8.DecodeFrom(bufio.NewReader(master)) // or ReadFile
+  playlist, err := m3u8.DecodeFrom(bufio.NewReader(master)) // or ReadFile
   if err != nil {
     fmt.Fprintln(os.Stderr, err)
     os.Exit(1)
@@ -31,6 +31,9 @@ func main() {
 }
 ```
 
+## see
+
+[pure go m3u8 decoder](https://medium.com/@poccariswet/pure-go-m3u8-decoder-eea5eb23c197)
 
 ## thx
 

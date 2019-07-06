@@ -15,6 +15,7 @@ func NewStart(line string) (*StartSegment, error) {
 		}
 	*/
 
+	// ここは長さが決まっているはずなので始点を定数でもつか、関数で切り出すべき
 	item := parseLine(line[len(ExtStart+":"):])
 
 	timeOffset, err := extractFloat64(item, TIMEOFFSET)
