@@ -101,14 +101,6 @@ type PlaylistSegment interface {
 	String() string
 }
 
-type ListType int
-
-const (
-	ERRTYPE ListType = iota
-	MASTER
-	MEDIA
-)
-
 // EXT-X-PROGRAM-DATE-TIME tag segment
 type DateTimeSegment struct {
 	Time time.Time
@@ -238,6 +230,5 @@ type Playlist struct {
 type States struct {
 	m3u8       bool
 	segmentTag bool
-	listtype   ListType
 	segment    PlaylistSegment
 }
