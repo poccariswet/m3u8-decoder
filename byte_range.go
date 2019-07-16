@@ -20,7 +20,7 @@ func NewByteRange(line string) (*ByteRangeSegment, error) {
 		return nil, nil
 	}
 
-	if strings.HasPrefix(line, ExtByteRange) {
+	if ExtByteRange.match(line) {
 		line = line[len(ExtByteRange+":"):]
 	}
 

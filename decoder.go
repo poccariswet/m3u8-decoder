@@ -59,22 +59,22 @@ func ReadFile(path string) (*Playlist, error) {
 
 // decodeLine decodes a line of playlist and parses
 func decodeLine(p *Playlist, line string, s *States) error {
-	if !s.m3u8 && line != EXTM3U {
+	if !s.m3u8 && !EXTM3U.match(line) {
 		return errors.New("invalid playlist, not exist #EXTM3U")
 	}
 
 	switch {
-	case line == EXTM3U:
+	case EXTM3U.match(line):
 		s.m3u8 = true
-	case strings.HasPrefix(line, ExtENDList):
+	case EXTENDLIST.match(line):
 		p.live = false
-	case strings.HasPrefix(line, ExtVersion):
+	case EXTVERSION.match(line):
 		p.hasVersion = true
-		_, err := fmt.Sscanf(line, ExtVersion+":%d", &p.Version)
+		_, err := fmt.Sscanf(line, "#EXT-X-VERSION:%d", &p.Version)
 		if err != nil {
 			return errors.Wrap(err, "invalid scan version")
 		}
-	case strings.HasPrefix(line, EXTINF):
+	case EXTINF.match(line):
 		inf, err := NewExtInf(line)
 		if err != nil {
 			return errors.Wrap(err, "new extinf err")
@@ -82,13 +82,13 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		p.master = false
 		s.segment = inf
 		s.segmentTag = true
-	case strings.HasPrefix(line, ExtMedia):
+	case ExtMedia.match(line):
 		m, err := NewMedia(line)
 		if err != nil {
 			return errors.Wrap(err, "new media err")
 		}
 		p.AppendSegment(m)
-	case strings.HasPrefix(line, ExtStreamInf):
+	case ExtStreamInf.match(line):
 		p.master = true
 		s.segmentTag = true
 		line = line[len(ExtStreamInf+":"):]
@@ -97,7 +97,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 			return errors.Wrap(err, "new variant err")
 		}
 		s.segment = v
-	case strings.HasPrefix(line, ExtFrameStreamInf):
+	case ExtFrameStreamInf.match(line):
 		p.master = true
 		s.segmentTag = false
 		line = line[len(ExtFrameStreamInf+":"):]
@@ -108,7 +108,7 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		v.IFrame = true
 		s.segment = v
 		p.AppendSegment(v)
-	case strings.HasPrefix(line, ExtByteRange):
+	case ExtByteRange.match(line):
 		br, err := NewByteRange(line)
 		if err != nil {
 			return errors.Wrap(err, "new byte range err")
@@ -122,25 +122,25 @@ func decodeLine(p *Playlist, line string, s *States) error {
 			inf.ByteRange = br
 			s.segment = inf
 		}
-	case strings.HasPrefix(line, ExtMap):
+	case ExtMap.match(line):
 		m, err := NewMap(line)
 		if err != nil {
 			return errors.Wrap(err, "new map err")
 		}
 		p.AppendSegment(m)
-	case strings.HasPrefix(line, ExtKey):
+	case ExtKey.match(line):
 		key, err := NewKey(line)
 		if err != nil {
 			return errors.Wrap(err, "new key err")
 		}
 		p.AppendSegment(key)
-	case strings.HasPrefix(line, ExtProgramDateTime):
+	case ExtProgramDateTime.match(line):
 		dt, err := NewProgramDateTime(line)
 		if err != nil {
 			return errors.Wrap(err, "new program date time err")
 		}
 		p.AppendSegment(dt)
-	case strings.HasPrefix(line, ExtDateRange):
+	case ExtDateRange.match(line):
 		dr, err := NewDateRange(line)
 		if err != nil {
 			return errors.Wrap(err, "new date range err")
@@ -148,31 +148,31 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		p.AppendSegment(dr)
 
 	/* low-latency tags */
-	case strings.HasPrefix(line, ExtServerControl):
+	case ExtServerControl.match(line):
 		sc, err := NewServerControl(line)
 		if err != nil {
 			return errors.Wrap(err, "new server control err")
 		}
 		p.AppendSegment(sc)
-	case strings.HasPrefix(line, ExtPartInf):
+	case ExtPartInf.match(line):
 		pi, err := NewPartInf(line)
 		if err != nil {
 			return errors.Wrap(err, "new part inf err")
 		}
 		p.AppendSegment(pi)
-	case strings.HasPrefix(line, ExtRenditionReport):
+	case ExtRenditionReport.match(line):
 		report, err := NewReport(line)
 		if err != nil {
 			return errors.Wrap(err, "new rendition report err")
 		}
 		p.AppendSegment(report)
-	case strings.HasPrefix(line, ExtSkip):
+	case ExtSkip.match(line):
 		skip, err := NewSkip(line)
 		if err != nil {
 			return errors.Wrap(err, "new skip err")
 		}
 		p.AppendSegment(skip)
-	case strings.HasPrefix(line, ExtPart):
+	case ExtPart.match(line):
 		part, err := NewPart(line)
 		if err != nil {
 			return errors.Wrap(err, "new part err")
@@ -180,52 +180,48 @@ func decodeLine(p *Playlist, line string, s *States) error {
 		p.AppendSegment(part)
 
 	/* session tags */
-	case strings.HasPrefix(line, ExtSessionKey):
+	case ExtSessionKey.match(line):
 		sk, err := NewSessionKey(line)
 		if err != nil {
 			return errors.Wrap(err, "new session key err")
 		}
 		p.AppendSegment(sk)
-	case strings.HasPrefix(line, ExtSessionData):
+	case ExtSessionData.match(line):
 		sd, err := NewSessionData(line)
 		if err != nil {
 			return errors.Wrap(err, "new session data err")
 		}
 		p.AppendSegment(sd)
 
-	case strings.HasPrefix(line, ExtStart):
+	case ExtStart.match(line):
 		start, err := NewStart(line)
 		if err != nil {
 			return errors.Wrap(err, "new start err")
 		}
 		p.AppendSegment(start)
-	case strings.HasPrefix(line, ExtIndependentSegments):
+	case ExtIndependentSegments.match(line):
 		p.IndependentSegments = true
 
 		/* playlist tags */
-	case strings.HasPrefix(line, ExtPlaylistType):
-		_, err := fmt.Sscanf(line, ExtPlaylistType+":%s", &p.PlaylistType)
-		if err != nil {
-			return errors.Wrap(err, "invalid scan playlist type")
+	case ExtPlaylistType.match(line):
+		if err := p.scanLineValue(line, ExtPlaylistType); err != nil {
+			return errors.Wrap(err, "invalid playlist type")
 		}
-	case strings.HasPrefix(line, ExtIFramesOnly):
+	case ExtIFramesOnly.match(line):
 		p.IFrameOnly = true
-	case strings.HasPrefix(line, ExtTargetDutation):
-		_, err := fmt.Sscanf(line, ExtTargetDutation+":%f", &p.TargetDuration)
-		if err != nil {
-			return errors.Wrap(err, "invalid scan TargetDuration")
+	case ExtTargetDutation.match(line):
+		if err := p.scanLineValue(line, ExtTargetDutation); err != nil {
+			return errors.Wrap(err, "invalid target duration")
 		}
-	case strings.HasPrefix(line, ExtDiscontinuitySequence):
-		_, err := fmt.Sscanf(line, ExtTargetDutation+":%d", &p.DiscontinuitySequence)
-		if err != nil {
-			return errors.Wrap(err, "invalid scan DiscontinuitySequence")
+	case ExtDiscontinuitySequence.match(line):
+		if err := p.scanLineValue(line, ExtDiscontinuitySequence); err != nil {
+			return errors.Wrap(err, "invalid discontinuity sequence")
 		}
-	case strings.HasPrefix(line, ExtAllowCache):
+	case ExtAllowCache.match(line):
 		p.AllowCache = parseBool(line[len(ExtAllowCache+":"):])
-	case strings.HasPrefix(line, ExtMediaSequence):
-		_, err := fmt.Sscanf(line, ExtTargetDutation+":%d", &p.MediaSequence)
-		if err != nil {
-			return errors.Wrap(err, "invalid scan MediaSequence")
+	case ExtMediaSequence.match(line):
+		if err := p.scanLineValue(line, ExtMediaSequence); err != nil {
+			return errors.Wrap(err, "invalid media sequence")
 		}
 	default:
 		line = strings.Trim(line, "\n")
