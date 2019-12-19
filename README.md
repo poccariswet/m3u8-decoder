@@ -1,4 +1,4 @@
-# m3u8-decorder
+# m3u8-decoder
 
 [![CircleCI](https://circleci.com/gh/poccariswet/m3u8-decoder/tree/master.svg?style=svg)](https://circleci.com/gh/poccariswet/m3u8-decoder/tree/master)
 
@@ -7,7 +7,7 @@
 ## Installation
 
 ```
-$ go get github.com/poccariswet/m3u8-decorder
+$ go get github.com/poccariswet/m3u8-decoder
 ```
 
 ## Usage
